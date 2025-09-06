@@ -7,6 +7,7 @@ import { GoogleMap, Vehicle } from "@/components/map/GoogleMap";
 import { BookingDialog } from "@/components/booking/BookingDialog";
 import { MapPin, Bus, ArrowRight } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
 const cities = [
   { key: "__geo", name: "Use my location", center: null as any },
