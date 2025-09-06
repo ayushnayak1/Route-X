@@ -82,7 +82,8 @@ export function GoogleMap({
 
   function initMap() {
     if (!ref.current || !window.google) return;
-    mapRef.current = new google.maps.Map(ref.current, {
+    // @ts-ignore
+    mapRef.current = new (window as any).google.maps.Map(ref.current, {
       center: { lat: 25.5, lng: 81.8 },
       zoom: compact ? 5 : 6,
       disableDefaultUI: compact,
