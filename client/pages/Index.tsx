@@ -90,7 +90,7 @@ export default function Index() {
             <DialogDescription>Tap a vehicle to view details and book.</DialogDescription>
           </DialogHeader>
           <div className="p-4 pt-2">
-            <GoogleMap className="rounded-lg" center={selectedCenter} onSelectVehicle={(v) => { setSelected(v); setBookingOpen(true); }} />
+            <GoogleMap className="rounded-lg" cityName={city !== "__geo" ? cities.find((c)=>c.key===city)?.name : undefined} center={selectedCenter} onSelectVehicle={(v) => { setSelected(v); setBookingOpen(true); }} />
           </div>
         </DialogContent>
       </Dialog>
