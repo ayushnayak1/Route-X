@@ -126,7 +126,7 @@ export function GoogleMap({
     });
     markers.current.set(v.id, marker);
 
-    const iw = new google.maps.InfoWindow({
+    const iw = new (window as any).google.maps.InfoWindow({
       content: renderInfoWindow(v),
     });
     infoWindows.current.set(v.id, iw);
