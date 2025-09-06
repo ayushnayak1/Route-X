@@ -42,6 +42,7 @@ export function GoogleMap({ className, compact = false, center, cityName, onSele
   const src = useMemo(() => buildEmbedSrc({ cityQuery: cityName, center: cityName ? undefined : effectiveCenter, zoom: compact ? 12 : 13 }), [cityName, effectiveCenter.lat, effectiveCenter.lng, compact]);
 
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [dynamicNearby, setDynamicNearby] = useState<string[]>([]);
 
   const NEARBY_BY_CITY: Record<string, string[]> = {
   kanpur: ["Unnao","Bithoor","Kalyanpur","Rania","Akbarpur","Mandhana","Chakeri","Panki","Rooma","Shivrajpur"],
@@ -60,26 +61,64 @@ function normalizeCity(label?: string) {
   return (label ?? "").toLowerCase().trim();
 }
 
-function genVehicles(label: string | undefined) {
+async function fetchNearbyPlaces(label?: string): Promise<string[]> {
+  const q = (label ?? "").trim();
+  if (!q) return [];
+  try {
+    // 1) Geocode city to lat/lon via Nominatim
+    const cityRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=1&addressdetails=1&countrycodes=in`);
+    const cityJson = await cityRes.json();
+    if (!Array.isArray(cityJson) || cityJson.length === 0) return [];
+    const { lat, lon } = cityJson[0];
+    const latNum = parseFloat(lat); const lonNum = parseFloat(lon);
+    // 2) Overpass API: towns/villages within 50km
+    const overpassQuery = `[
+      out:json][timeout:10];
+      (
+        node["place"~"city|town|village|hamlet"](around:50000,${latNum},${lonNum});
+      );
+      out tags 20;`;
+    const overRes = await fetch("https://overpass-api.de/api/interpreter", {
+      method: "POST",
+      headers: { "Content-Type": "text/plain; charset=UTF-8" },
+      body: overpassQuery,
+    });
+    const overJson = await overRes.json();
+    const names: string[] = Array.isArray(overJson?.elements)
+      ? overJson.elements
+          .map((el: any) => el?.tags?.name)
+          .filter((n: any) => typeof n === "string")
+      : [];
+    // unique, exclude the base name itself
+    const uniq = Array.from(new Set(names)).filter((n) => n.toLowerCase() !== q.toLowerCase()).slice(0, 12);
+    return uniq;
+  } catch {
+    return [];
+  }
+}
+
+function fallbackNearby(base: string) {
+  const dirs = ["North","South","East","West","North-East","North-West","South-East","South-West"];
+  const labels: string[] = [];
+  for (let i = 0; i < 12; i++) {
+    const dir = dirs[i % dirs.length];
+    const km = Math.max(2, Math.round(Math.random() * 48));
+    labels.push(`${base} ${dir} · ${km}km`);
+  }
+  return labels;
+}
+
+function genVehicles(label: string | undefined, places: string[]) {
   const names = ["Rakesh Kumar","Anita Devi","Sanjay Patel","Sunita Yadav","Mohd. Imran","Pooja Singh","Vivek Sharma","Kiran Verma","Rajesh Gupta","Suresh Chavan","Neha Dubey","Asha Devi","Deepak Kumar","Alok Tiwari","Priya Patel","Gopal Das","Arun Rao","Meena Kumari"];
   const norm = normalizeCity(label);
   const fromBase = label ?? "Your City";
-  const nearby = NEARBY_BY_CITY[norm] ?? [];
-  function fallbackNearby(base: string) {
-    const dirs = ["North","South","East","West","North-East","North-West","South-East","South-West"];
-    const labels: string[] = [];
-    for (let i = 0; i < 12; i++) {
-      const dir = dirs[i % dirs.length];
-      const km = Math.max(2, Math.round(Math.random() * 48));
-      labels.push(`${base} ${dir} · ${km}km`);
-    }
-    return labels;
-  }
-  const fallback = nearby.length ? nearby : fallbackNearby(fromBase);
+  const nearbyStatic = NEARBY_BY_CITY[norm] ?? [];
+  const nearby = places.length ? places : nearbyStatic;
+  const pool = nearby.length ? nearby : fallbackNearby(fromBase);
   const count = 18;
   const list: Vehicle[] = Array.from({ length: count }).map((_, i) => {
     const driver = names[i % names.length];
-    const to = fallback[i % fallback.length];
+    const to = pool[i % pool.length];
     const eta = Math.max(2, Math.round(5 + Math.random() * 40));
     const fare = Math.round(10 + Math.random() * 60);
     const seats = Math.round(Math.random() * 40);
@@ -101,18 +140,26 @@ function genVehicles(label: string | undefined) {
   const [active, setActive] = useState<Vehicle | null>(null);
 
   useEffect(() => {
-    const initial = genVehicles(cityName);
+    let cancelled = false;
+    (async () => {
+      const places = await fetchNearbyPlaces(cityName);
+      if (!cancelled) setDynamicNearby(places);
+    })();
+    return () => { cancelled = true; };
+  }, [cityName]);
+
+  useEffect(() => {
+    const initial = genVehicles(cityName, dynamicNearby);
     setVehicles(initial);
     if (onVehiclesChange) {
-      // ensure parent state update doesn't happen during render
-      // schedule asynchronously
       requestAnimationFrame(() => onVehiclesChange(initial));
     }
-  }, [cityName, center?.lat, center?.lng]);
+  }, [cityName, dynamicNearby]);
 
   useEffect(() => {
     const t = setInterval(() => {
       setVehicles((prev) => {
+        if (prev.length === 0) return prev;
         const next = prev.map((v) => ({
           ...v,
           xPct: Math.min(95, Math.max(5, v.xPct + (Math.random() - 0.5) * 1.5)),
