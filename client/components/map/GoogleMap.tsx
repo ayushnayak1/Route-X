@@ -12,6 +12,7 @@ export type Vehicle = {
   etaMins: number;
   fareINR: number;
   seatsAvailable: number;
+  distanceKm: number;
   xPct: number; // absolute overlay position (% from left)
   yPct: number; // absolute overlay position (% from top)
 };
@@ -42,30 +43,51 @@ export function GoogleMap({ className, compact = false, center, cityName, onSele
 
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 
-  function genVehicles(label: string | undefined) {
-    const names = ["Rakesh Kumar","Anita Devi","Sanjay Patel","Sunita Yadav","Mohd. Imran","Pooja Singh","Vivek Sharma","Kiran Verma","Rajesh Gupta","Suresh Chavan","Neha Dubey","Asha Devi","Deepak Kumar","Alok Tiwari","Priya Patel","Gopal Das","Arun Rao","Meena Kumari"];
-    const toPlaces = ["Bus Stand","Railway Station","Market","College","Chowk","Depot","Civil Lines","Basti","Mandi","Ring Road","City Center","ISBT"];
-    const fromBase = label ?? "City";
-    const count = 15;
-    const list: Vehicle[] = Array.from({ length: count }).map((_, i) => {
-      const driver = names[i % names.length];
-      const to = toPlaces[(i * 3) % toPlaces.length];
-      const eta = Math.max(2, Math.round(5 + Math.random() * 40));
-      const fare = Math.round(10 + Math.random() * 60);
-      const seats = Math.round(Math.random() * 40);
-      return {
-        id: `bus-${i + 1}`,
-        driver,
-        route: { from: fromBase, to },
-        etaMins: eta,
-        fareINR: fare,
-        seatsAvailable: seats,
-        xPct: 8 + Math.random() * 84,
-        yPct: 10 + Math.random() * 78,
-      };
-    });
-    return list;
-  }
+  const NEARBY_BY_CITY: Record<string, string[]> = {
+  kanpur: ["Unnao","Bithoor","Kalyanpur","Rania","Akbarpur","Mandhana","Chakeri","Panki","Rooma","Shivrajpur"],
+  prayagraj: ["Naini","Jhunsi","Phaphamau","Kaushambi","Karchana","Handia","Shankargarh","Mau Aima","Soraon","Kunda"],
+  indore: ["Rau","Mhow","Sanwer","Pithampur","Dewas","Betma","Hatod","Manglia","Manpur","Gopalpura"],
+  patna: ["Hajipur","Danapur","Bihta","Phulwari Sharif","Khagaul","Fatuha","Barh","Maner","Masaurhi","Bakhtiyarpur"],
+  jaipur: ["Sanganer","Amer","Chomu","Bagru","Dudu","Jobner","Bassi","Kalwar","Vatika","Jamwa Ramgarh"],
+  bhopal: ["Mandideep","Sehore","Obedullaganj","Kolar","Bairagarh","Berasia","Huzur","Bilkhiria","Sanchi","Itarsi"],
+  nagpur: ["Kamptee","Hingna","Butibori","Umred","Katol","Savner","Khapri","Parsioni","Sindi","Mauda"],
+  banda: ["Atarra","Baberu","Naraini","Tindwari","Chitrakoot","Mahoba","Kurara","Kamasin","Pailani","Mataundh"],
+  basti: ["Harraiya","Rudhauli","Khalilabad","Munderwa","Gaur","Tinich","Bhanpur","Walterganj","Gosainganj","Sahjanwa"],
+  darava: ["Nearby 1","Nearby 2","Nearby 3","Nearby 4","Nearby 5","Nearby 6","Nearby 7","Nearby 8","Nearby 9","Nearby 10"],
+};
+
+function normalizeCity(label?: string) {
+  return (label ?? "").toLowerCase().trim();
+}
+
+function genVehicles(label: string | undefined) {
+  const names = ["Rakesh Kumar","Anita Devi","Sanjay Patel","Sunita Yadav","Mohd. Imran","Pooja Singh","Vivek Sharma","Kiran Verma","Rajesh Gupta","Suresh Chavan","Neha Dubey","Asha Devi","Deepak Kumar","Alok Tiwari","Priya Patel","Gopal Das","Arun Rao","Meena Kumari"];
+  const norm = normalizeCity(label);
+  const fromBase = label ?? "Your City";
+  const nearby = NEARBY_BY_CITY[norm] ?? [];
+  const fallback = nearby.length ? nearby : ["Central Market","Old Town","Industrial Area","West End","New Colony","East Gate","South Park","North Square","Airport Road","River View"];
+  const count = 18;
+  const list: Vehicle[] = Array.from({ length: count }).map((_, i) => {
+    const driver = names[i % names.length];
+    const to = fallback[i % fallback.length];
+    const eta = Math.max(2, Math.round(5 + Math.random() * 40));
+    const fare = Math.round(10 + Math.random() * 60);
+    const seats = Math.round(Math.random() * 40);
+    const distanceKm = Math.round(2 + Math.random() * 48); // within 50km
+    return {
+      id: `bus-${i + 1}`,
+      driver,
+      route: { from: fromBase, to },
+      etaMins: eta,
+      fareINR: fare,
+      seatsAvailable: seats,
+      distanceKm,
+      xPct: 8 + Math.random() * 84,
+      yPct: 10 + Math.random() * 78,
+    };
+  });
+  return list;
+}
   const [active, setActive] = useState<Vehicle | null>(null);
 
   useEffect(() => {
