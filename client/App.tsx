@@ -13,6 +13,7 @@ import Profile from "./pages/Profile";
 import { Header } from "@/components/core/Header";
 import { Footer } from "@/components/core/Footer";
 import { AuthProvider } from "@/context/AuthContext";
+import { I18nProvider } from "@/context/I18nContext";
 
 const queryClient = new QueryClient();
 
