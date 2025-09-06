@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { GoogleMap, Vehicle } from "@/components/map/GoogleMap";
 import { BookingDialog } from "@/components/booking/BookingDialog";
 import { MapPin, Bus, ArrowRight } from "lucide-react";
