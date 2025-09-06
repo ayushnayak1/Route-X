@@ -41,31 +41,17 @@ export default function Index() {
         </div>
         <Card className="p-2 shadow-lg">
           <CardContent className="relative p-3">
-            <div className="mb-2 grid grid-cols-1 items-center gap-3 sm:grid-cols-3">
-              <div className="text-sm text-muted-foreground">City</div>
-              <Select value={city} onValueChange={(v)=>{ setCity(v); setCityOverride(undefined); }}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select city" />
-                </SelectTrigger>
-                <SelectContent>
-                  {cities.map((c) => (
-                    <SelectItem key={c.key || "geo"} value={c.key}>{c.name}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <form
-                className="flex items-center gap-2"
-                onSubmit={(e)=>{ e.preventDefault(); const q = searchTerm.trim(); setCityOverride(q || undefined); }}
-              >
-                <Input value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} placeholder="Search city (e.g., Banda)" />
-                <Button type="submit" variant="secondary">Search</Button>
-              </form>
-            </div>
+            <form
+              className="mb-2 flex flex-col gap-2 sm:flex-row sm:items-center"
+              onSubmit={(e)=>{ e.preventDefault(); const q = searchTerm.trim(); setQueryCity(q || undefined); }}
+            >
+              <Input value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} placeholder="Search city (e.g., Banda)" />
+              <Button type="submit" variant="secondary">Search</Button>
+            </form>
             <GoogleMap
               compact
               className="rounded-lg"
               cityName={displayCityName}
-              center={selectedCenter}
               onSelectVehicle={(v) => { setSelected(v); setBookingOpen(true); }}
               onVehiclesChange={setLiveVehicles}
             />
