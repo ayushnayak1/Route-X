@@ -110,6 +110,7 @@ export default function Index() {
                 <div className="hidden md:block text-sm">ETA: {v.etaMins} min</div>
                 <div className="hidden md:block text-sm">Seats: {v.seatsAvailable}</div>
                 <div className="hidden md:block text-sm">Fare: ₹{v.fareINR}</div>
+                <div className="hidden md:block text-sm">Dist: {v.distanceKm} km</div>
                 <div className="text-right md:text-left">
                   <Button size="sm" onClick={() => { setSelected(v); setBookingOpen(true); }}>Book</Button>
                 </div>
