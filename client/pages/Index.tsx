@@ -12,12 +12,10 @@ export default function Index() {
   const [mapOpen, setMapOpen] = useState(false);
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selected, setSelected] = useState<Vehicle | null>(null);
-  const [city, setCity] = useState(cities[0].key);
   const [liveVehicles, setLiveVehicles] = useState<Vehicle[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [cityOverride, setCityOverride] = useState<string | undefined>(undefined);
-  const selectedCenter = cities.find((c) => c.key === city)?.center || undefined;
-  const displayCityName = cityOverride ?? (city === "__geo" ? undefined : cities.find((c)=>c.key===city)?.name);
+  const [queryCity, setQueryCity] = useState<string | undefined>(undefined);
+  const displayCityName = queryCity;
 
   return (
     <div className="min-h-[calc(100dvh-56px)] bg-gradient-to-b from-background to-muted/30">
