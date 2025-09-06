@@ -10,13 +10,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 const cities = [
   { key: "__geo", name: "Use my location", center: null as any },
-  { key: "kanpur", name: "Kanpur", center: { lat: 26.4499, lng: 80.3319 } },
-  { key: "prayagraj", name: "Prayagraj", center: { lat: 25.4358, lng: 81.8463 } },
-  { key: "indore", name: "Indore", center: { lat: 22.7196, lng: 75.8577 } },
-  { key: "patna", name: "Patna", center: { lat: 25.5941, lng: 85.1376 } },
-  { key: "jaipur", name: "Jaipur", center: { lat: 26.9124, lng: 75.7873 } },
-  { key: "bhopal", name: "Bhopal", center: { lat: 23.2599, lng: 77.4126 } },
-  { key: "nagpur", name: "Nagpur", center: { lat: 21.1458, lng: 79.0882 } },
+  { key: "kanpur", name: "Kanpur", center: null as any },
+  { key: "prayagraj", name: "Prayagraj", center: null as any },
+  { key: "indore", name: "Indore", center: null as any },
+  { key: "patna", name: "Patna", center: null as any },
+  { key: "jaipur", name: "Jaipur", center: null as any },
+  { key: "bhopal", name: "Bhopal", center: null as any },
+  { key: "nagpur", name: "Nagpur", center: null as any },
+  { key: "banda", name: "Banda", center: null as any },
+  { key: "darava", name: "Darava", center: null as any },
+  { key: "basti", name: "Basti", center: null as any },
 ];
 
 export default function Index() {
@@ -24,6 +27,7 @@ export default function Index() {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selected, setSelected] = useState<Vehicle | null>(null);
   const [city, setCity] = useState(cities[0].key);
+  const [liveVehicles, setLiveVehicles] = useState<Vehicle[]>([]);
   const selectedCenter = cities.find((c) => c.key === city)?.center || undefined;
 
   return (
@@ -63,7 +67,7 @@ export default function Index() {
                 </SelectContent>
               </Select>
             </div>
-            <GoogleMap compact className="rounded-lg" cityName={city !== "__geo" ? cities.find((c)=>c.key===city)?.name : undefined} center={selectedCenter} onSelectVehicle={(v) => { setSelected(v); setBookingOpen(true); }} />
+            <GoogleMap compact className="rounded-lg" cityName={city !== "__geo" ? cities.find((c)=>c.key===city)?.name : undefined} center={selectedCenter} onSelectVehicle={(v) => { setSelected(v); setBookingOpen(true); }} onVehiclesChange={setLiveVehicles} />
             <div className="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-border"/>
             <div className="absolute bottom-3 right-3">
               <Button size="sm" onClick={() => setMapOpen(true)}>Enlarge map</Button>
@@ -73,14 +77,31 @@ export default function Index() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-16">
-        <div className="grid gap-6 md:grid-cols-3">
-          {[{title:"Live tracking",desc:"Tap any bus to see ETA, driver name, route and seats."},{title:"One-tap booking",desc:"Reserve your seats and pay on-board or online."},{title:"Driver mode",desc:"Drivers share live GPS and availability for their shifts."}].map((f)=> (
-            <Card key={f.title} className="p-6">
-              <h3 className="text-lg font-semibold">{f.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{f.desc}</p>
-            </Card>
-          ))}
-        </div>
+        <Card className="p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="text-lg font-semibold">Live status in {city === "__geo" ? "your area" : cities.find((c)=>c.key===city)?.name}</h3>
+            <span className="text-sm text-muted-foreground">{liveVehicles.length} buses</span>
+          </div>
+          <div className="grid gap-2 max-h-80 overflow-auto">
+            {liveVehicles.map((v) => (
+              <div key={v.id} className="grid grid-cols-2 md:grid-cols-6 items-center gap-2 rounded border p-2">
+                <div className="col-span-2 md:col-span-2">
+                  <div className="font-medium">{v.route.from} → {v.route.to}</div>
+                  <div className="text-xs text-muted-foreground">Driver: {v.driver}</div>
+                </div>
+                <div className="hidden md:block text-sm">ETA: {v.etaMins} min</div>
+                <div className="hidden md:block text-sm">Seats: {v.seatsAvailable}</div>
+                <div className="hidden md:block text-sm">Fare: ₹{v.fareINR}</div>
+                <div className="text-right md:text-left">
+                  <Button size="sm" onClick={() => { setSelected(v); setBookingOpen(true); }}>Book</Button>
+                </div>
+              </div>
+            ))}
+            {liveVehicles.length === 0 && (
+              <div className="text-sm text-muted-foreground">No buses visible yet. Try selecting a city.</div>
+            )}
+          </div>
+        </Card>
       </section>
 
       <Dialog open={mapOpen} onOpenChange={setMapOpen}>
@@ -90,7 +111,7 @@ export default function Index() {
             <DialogDescription>Tap a vehicle to view details and book.</DialogDescription>
           </DialogHeader>
           <div className="p-4 pt-2">
-            <GoogleMap className="rounded-lg" cityName={city !== "__geo" ? cities.find((c)=>c.key===city)?.name : undefined} center={selectedCenter} onSelectVehicle={(v) => { setSelected(v); setBookingOpen(true); }} />
+            <GoogleMap className="rounded-lg" cityName={city !== "__geo" ? cities.find((c)=>c.key===city)?.name : undefined} center={selectedCenter} onSelectVehicle={(v) => { setSelected(v); setBookingOpen(true); }} onVehiclesChange={setLiveVehicles} />
           </div>
         </DialogContent>
       </Dialog>
