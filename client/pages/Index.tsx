@@ -6,22 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { GoogleMap, Vehicle } from "@/components/map/GoogleMap";
 import { BookingDialog } from "@/components/booking/BookingDialog";
 import { MapPin, Bus, ArrowRight } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-
-const cities = [
-  { key: "__geo", name: "Use my location", center: null as any },
-  { key: "kanpur", name: "Kanpur", center: null as any },
-  { key: "prayagraj", name: "Prayagraj", center: null as any },
-  { key: "indore", name: "Indore", center: null as any },
-  { key: "patna", name: "Patna", center: null as any },
-  { key: "jaipur", name: "Jaipur", center: null as any },
-  { key: "bhopal", name: "Bhopal", center: null as any },
-  { key: "nagpur", name: "Nagpur", center: null as any },
-  { key: "banda", name: "Banda", center: null as any },
-  { key: "darava", name: "Darava", center: null as any },
-  { key: "basti", name: "Basti", center: null as any },
-];
 
 export default function Index() {
   const [mapOpen, setMapOpen] = useState(false);
