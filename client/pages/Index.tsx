@@ -9,7 +9,7 @@ import { MapPin, Bus, ArrowRight } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const cities = [
-  { key: "", name: "Use my location", center: null as any },
+  { key: "__geo", name: "Use my location", center: null as any },
   { key: "kanpur", name: "Kanpur", center: { lat: 26.4499, lng: 80.3319 } },
   { key: "prayagraj", name: "Prayagraj", center: { lat: 25.4358, lng: 81.8463 } },
   { key: "indore", name: "Indore", center: { lat: 22.7196, lng: 75.8577 } },
