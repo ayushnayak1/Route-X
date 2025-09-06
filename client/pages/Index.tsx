@@ -58,10 +58,10 @@ export default function Index() {
 
       <Dialog open={mapOpen} onOpenChange={setMapOpen}>
         <DialogContent className="max-w-5xl p-0">
-          <div className="p-4 pb-0">
-            <h3 className="text-lg font-semibold">Live Map</h3>
-            <p className="text-sm text-muted-foreground">Tap a vehicle to view details and book.</p>
-          </div>
+          <DialogHeader className="p-4 pb-0">
+            <DialogTitle>Live Map</DialogTitle>
+            <DialogDescription>Tap a vehicle to view details and book.</DialogDescription>
+          </DialogHeader>
           <div className="p-4 pt-2">
             <GoogleMap className="rounded-lg" onSelectVehicle={(v) => { setSelected(v); setBookingOpen(true); }} />
           </div>
