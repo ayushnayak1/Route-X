@@ -119,7 +119,7 @@ export function GoogleMap({
 
   function createMarker(v: Vehicle) {
     if (!mapRef.current || !window.google) return;
-    const marker = new google.maps.Marker({
+    const marker = new (window as any).google.maps.Marker({
       position: v.position,
       map: mapRef.current,
       icon: busIcon(getComputedStyle(document.documentElement).getPropertyValue("--primary") ? `hsl(${getComputedStyle(document.documentElement).getPropertyValue("--primary")})` : "#2563eb"),
