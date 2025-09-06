@@ -7,6 +7,9 @@ import { GoogleMap, Vehicle } from "@/components/map/GoogleMap";
 import { BookingDialog } from "@/components/booking/BookingDialog";
 import { MapPin, Bus, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function Index() {
   const [mapOpen, setMapOpen] = useState(false);
@@ -16,6 +19,8 @@ export default function Index() {
   const [searchTerm, setSearchTerm] = useState("");
   const [queryCity, setQueryCity] = useState<string | undefined>(undefined);
   const displayCityName = queryCity;
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-[calc(100dvh-56px)] bg-gradient-to-b from-background to-muted/30">
@@ -32,7 +37,10 @@ export default function Index() {
             <Button onClick={() => setMapOpen(true)}>
               Open Live Map <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-            <Button variant="outline">Download App</Button>
+            <Button variant="outline" onClick={() => {
+              if (user) navigate("/profile");
+              else { toast.info("Please login to view your bookings"); navigate("/auth"); }
+            }}>My Bookings</Button>
           </div>
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
             <div className="flex items-center gap-2"><Bus className="h-4 w-4 text-primary"/> Focused on public buses</div>
