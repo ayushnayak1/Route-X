@@ -97,7 +97,7 @@ export default function Index() {
       <section className="mx-auto max-w-7xl px-4 pb-16">
         <Card className="p-4">
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-lg font-semibold">Live status in {city === "__geo" ? "your area" : cities.find((c)=>c.key===city)?.name}</h3>
+            <h3 className="text-lg font-semibold">Live status in {displayCityName ?? "your area"}</h3>
             <span className="text-sm text-muted-foreground">{liveVehicles.length} buses</span>
           </div>
           <div className="grid gap-2 max-h-80 overflow-auto">
