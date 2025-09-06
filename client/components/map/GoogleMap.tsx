@@ -114,8 +114,8 @@ export function GoogleMap({
     return () => clearInterval(interval);
   }
 
-  const markers = useRef(new Map<string, google.maps.Marker>());
-  const infoWindows = useRef(new Map<string, google.maps.InfoWindow>());
+  const markers = useRef(new Map<string, any>());
+  const infoWindows = useRef(new Map<string, any>());
 
   function createMarker(v: Vehicle) {
     if (!mapRef.current || !window.google) return;
