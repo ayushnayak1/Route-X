@@ -39,11 +39,31 @@ function staticMapUrl(center: { lat: number; lng: number }, compact: boolean) {
   return `${base}?${params.toString()}`;
 }
 
-export function GoogleMap({ className, compact = false }: { className?: string; compact?: boolean; onSelectVehicle?: (v: Vehicle) => void }) {
+function googleStaticMapUrl(center: { lat: number; lng: number }, compact: boolean) {
+  const key = import.meta.env.VITE_GOOGLE_STATIC_MAPS_API_KEY as string | undefined;
+  if (!key) return null;
+  const size = compact ? { w: 800, h: 300 } : { w: 1200, h: 500 };
+  const zoom = compact ? 13 : 14;
+  const params = new URLSearchParams({
+    center: `${center.lat},${center.lng}`,
+    zoom: String(zoom),
+    size: `${size.w}x${size.h}`,
+    maptype: "roadmap",
+    scale: "2",
+    markers: `color:blue|${center.lat},${center.lng}`,
+    key,
+  });
+  return `https://maps.googleapis.com/maps/api/staticmap?${params.toString()}`;
+}
+
+export function GoogleMap({ className, compact = false, center: centerProp }: { className?: string; compact?: boolean; center?: { lat: number; lng: number }; onSelectVehicle?: (v: Vehicle) => void }) {
   const fallback = { lat: 22.9734, lng: 78.6569 }; // India centroid
   const geo = useGeolocation();
-  const center = geo ?? fallback;
-  const url = useMemo(() => staticMapUrl(center, compact), [center.lat, center.lng, compact]);
+  const center = centerProp ?? geo ?? fallback;
+  const url = useMemo(() => {
+    const g = googleStaticMapUrl(center, compact);
+    return g ?? staticMapUrl(center, compact);
+  }, [center.lat, center.lng, compact]);
 
   return (
     <div className={cn("relative overflow-hidden rounded-lg", className, compact ? "h-56" : "h-[420px]")}> 
