@@ -1,4 +1,4 @@
-export const lightMapStyle: google.maps.MapTypeStyle[] = [
+export const lightMapStyle: any[] = [
   { elementType: "geometry", stylers: [{ color: "#f5f5f5" }] },
   { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
   { elementType: "labels.text.fill", stylers: [{ color: "#4b5563" }] },
@@ -18,7 +18,7 @@ export const lightMapStyle: google.maps.MapTypeStyle[] = [
   { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#3b82f6" }] },
 ];
 
-export const darkMapStyle: google.maps.MapTypeStyle[] = [
+export const darkMapStyle: any[] = [
   { elementType: "geometry", stylers: [{ color: "#0b1020" }] },
   { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
   { elementType: "labels.text.fill", stylers: [{ color: "#94a3b8" }] },
