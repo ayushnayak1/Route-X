@@ -164,7 +164,7 @@ function genVehicles(label: string | undefined) {
             <div>
               <div className="font-semibold">{active.route.from} → {active.route.to}</div>
               <div className="text-xs text-muted-foreground">Driver: {active.driver}</div>
-              <div className="mt-1 text-xs">ETA: <Badge variant="secondary">{active.etaMins} min</Badge> · Fare: ₹{active.fareINR} · Seats: {active.seatsAvailable}</div>
+              <div className="mt-1 text-xs">ETA: <Badge variant="secondary">{active.etaMins} min</Badge> · Fare: ₹{active.fareINR} · Seats: {active.seatsAvailable} · Distance: {active.distanceKm} km</div>
             </div>
             <Button size="sm" onClick={() => onSelectVehicle?.(active)}>Book</Button>
           </div>
