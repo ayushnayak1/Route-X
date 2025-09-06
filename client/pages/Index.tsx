@@ -6,11 +6,25 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { GoogleMap, Vehicle } from "@/components/map/GoogleMap";
 import { BookingDialog } from "@/components/booking/BookingDialog";
 import { MapPin, Bus, ArrowRight } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+const cities = [
+  { key: "", name: "Use my location", center: null as any },
+  { key: "kanpur", name: "Kanpur", center: { lat: 26.4499, lng: 80.3319 } },
+  { key: "prayagraj", name: "Prayagraj", center: { lat: 25.4358, lng: 81.8463 } },
+  { key: "indore", name: "Indore", center: { lat: 22.7196, lng: 75.8577 } },
+  { key: "patna", name: "Patna", center: { lat: 25.5941, lng: 85.1376 } },
+  { key: "jaipur", name: "Jaipur", center: { lat: 26.9124, lng: 75.7873 } },
+  { key: "bhopal", name: "Bhopal", center: { lat: 23.2599, lng: 77.4126 } },
+  { key: "nagpur", name: "Nagpur", center: { lat: 21.1458, lng: 79.0882 } },
+];
 
 export default function Index() {
   const [mapOpen, setMapOpen] = useState(false);
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selected, setSelected] = useState<Vehicle | null>(null);
+  const [city, setCity] = useState(cities[0].key);
+  const selectedCenter = cities.find((c) => c.key === city)?.center || undefined;
 
   return (
     <div className="min-h-[calc(100dvh-56px)] bg-gradient-to-b from-background to-muted/30">
@@ -35,8 +49,21 @@ export default function Index() {
           </div>
         </div>
         <Card className="p-2 shadow-lg">
-          <CardContent className="relative p-0">
-            <GoogleMap compact className="rounded-lg" onSelectVehicle={(v) => { setSelected(v); setBookingOpen(true); }} />
+          <CardContent className="relative p-3">
+            <div className="mb-2 flex items-center justify-between gap-3">
+              <span className="text-sm text-muted-foreground">City</span>
+              <Select value={city} onValueChange={setCity}>
+                <SelectTrigger className="w-56">
+                  <SelectValue placeholder="Select city" />
+                </SelectTrigger>
+                <SelectContent>
+                  {cities.map((c) => (
+                    <SelectItem key={c.key || "geo"} value={c.key}>{c.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <GoogleMap compact className="rounded-lg" center={selectedCenter} onSelectVehicle={(v) => { setSelected(v); setBookingOpen(true); }} />
             <div className="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-border"/>
             <div className="absolute bottom-3 right-3">
               <Button size="sm" onClick={() => setMapOpen(true)}>Enlarge map</Button>
@@ -63,7 +90,7 @@ export default function Index() {
             <DialogDescription>Tap a vehicle to view details and book.</DialogDescription>
           </DialogHeader>
           <div className="p-4 pt-2">
-            <GoogleMap className="rounded-lg" onSelectVehicle={(v) => { setSelected(v); setBookingOpen(true); }} />
+            <GoogleMap className="rounded-lg" center={selectedCenter} onSelectVehicle={(v) => { setSelected(v); setBookingOpen(true); }} />
           </div>
         </DialogContent>
       </Dialog>
