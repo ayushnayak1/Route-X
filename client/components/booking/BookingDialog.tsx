@@ -12,11 +12,15 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Vehicle } from "@/components/map/GoogleMap";
 import { toast } from "sonner";
+import { addBooking } from "@/lib/bookings";
+import { useAuth } from "@/context/AuthContext";
 
 export function BookingDialog({ open, onOpenChange, vehicle }: { open: boolean; onOpenChange: (v: boolean) => void; vehicle: Vehicle | null }) {
   const [seats, setSeats] = useState(1);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+
+  const { user } = useAuth();
 
   function submit() {
     if (!vehicle) return;
@@ -24,7 +28,28 @@ export function BookingDialog({ open, onOpenChange, vehicle }: { open: boolean; 
       toast.error("Please fill your details");
       return;
     }
-    toast.success(`Booked ${seats} seat(s) on ${vehicle.route.from} → ${vehicle.route.to}`);
+    const total = seats * vehicle.fareINR;
+    const booking = {
+      id: crypto.randomUUID(),
+      vehicle: {
+        id: vehicle.id,
+        driver: vehicle.driver,
+        route: vehicle.route,
+        etaMins: vehicle.etaMins,
+        fareINR: vehicle.fareINR,
+        seatsAvailable: vehicle.seatsAvailable,
+        distanceKm: (vehicle as any).distanceKm,
+      },
+      seats,
+      totalINR: total,
+      createdAt: Date.now(),
+    };
+    const uid = user?.id ?? "guest";
+    addBooking(uid, booking);
+    toast.success(`Booked ${seats} seat(s) · ₹${total}`);
+    if (!user) {
+      toast.info("Tip: Login to see your bookings in Profile");
+    }
     onOpenChange(false);
   }
 

@@ -65,7 +65,17 @@ function genVehicles(label: string | undefined) {
   const norm = normalizeCity(label);
   const fromBase = label ?? "Your City";
   const nearby = NEARBY_BY_CITY[norm] ?? [];
-  const fallback = nearby.length ? nearby : ["Central Market","Old Town","Industrial Area","West End","New Colony","East Gate","South Park","North Square","Airport Road","River View"];
+  function fallbackNearby(base: string) {
+    const dirs = ["North","South","East","West","North-East","North-West","South-East","South-West"];
+    const labels: string[] = [];
+    for (let i = 0; i < 12; i++) {
+      const dir = dirs[i % dirs.length];
+      const km = Math.max(2, Math.round(Math.random() * 48));
+      labels.push(`${base} ${dir} · ${km}km`);
+    }
+    return labels;
+  }
+  const fallback = nearby.length ? nearby : fallbackNearby(fromBase);
   const count = 18;
   const list: Vehicle[] = Array.from({ length: count }).map((_, i) => {
     const driver = names[i % names.length];
