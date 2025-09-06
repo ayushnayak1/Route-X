@@ -63,7 +63,7 @@ export default function Index() {
                 </SelectContent>
               </Select>
             </div>
-            <GoogleMap compact className="rounded-lg" center={selectedCenter} onSelectVehicle={(v) => { setSelected(v); setBookingOpen(true); }} />
+            <GoogleMap compact className="rounded-lg" cityName={city !== "__geo" ? cities.find((c)=>c.key===city)?.name : undefined} center={selectedCenter} onSelectVehicle={(v) => { setSelected(v); setBookingOpen(true); }} />
             <div className="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-border"/>
             <div className="absolute bottom-3 right-3">
               <Button size="sm" onClick={() => setMapOpen(true)}>Enlarge map</Button>
