@@ -99,7 +99,7 @@ export default function Index() {
             <DialogDescription>Tap a vehicle to view details and book.</DialogDescription>
           </DialogHeader>
           <div className="p-4 pt-2">
-            <GoogleMap className="rounded-lg" cityName={displayCityName} center={selectedCenter} onSelectVehicle={(v) => { setSelected(v); setBookingOpen(true); }} onVehiclesChange={setLiveVehicles} />
+            <GoogleMap className="rounded-lg" cityName={displayCityName} onSelectVehicle={(v) => { setSelected(v); setBookingOpen(true); }} onVehiclesChange={setLiveVehicles} />
           </div>
         </DialogContent>
       </Dialog>
