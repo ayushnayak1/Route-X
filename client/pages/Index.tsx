@@ -58,10 +58,10 @@ export default function Index() {
         </div>
         <Card className="p-2 shadow-lg">
           <CardContent className="relative p-3">
-            <div className="mb-2 flex items-center justify-between gap-3">
-              <span className="text-sm text-muted-foreground">City</span>
-              <Select value={city} onValueChange={setCity}>
-                <SelectTrigger className="w-56">
+            <div className="mb-2 grid grid-cols-1 items-center gap-3 sm:grid-cols-3">
+              <div className="text-sm text-muted-foreground">City</div>
+              <Select value={city} onValueChange={(v)=>{ setCity(v); setCityOverride(undefined); }}>
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select city" />
                 </SelectTrigger>
                 <SelectContent>
@@ -70,8 +70,22 @@ export default function Index() {
                   ))}
                 </SelectContent>
               </Select>
+              <form
+                className="flex items-center gap-2"
+                onSubmit={(e)=>{ e.preventDefault(); const q = searchTerm.trim(); setCityOverride(q || undefined); }}
+              >
+                <Input value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} placeholder="Search city (e.g., Banda)" />
+                <Button type="submit" variant="secondary">Search</Button>
+              </form>
             </div>
-            <GoogleMap compact className="rounded-lg" cityName={city !== "__geo" ? cities.find((c)=>c.key===city)?.name : undefined} center={selectedCenter} onSelectVehicle={(v) => { setSelected(v); setBookingOpen(true); }} onVehiclesChange={setLiveVehicles} />
+            <GoogleMap
+              compact
+              className="rounded-lg"
+              cityName={displayCityName}
+              center={selectedCenter}
+              onSelectVehicle={(v) => { setSelected(v); setBookingOpen(true); }}
+              onVehiclesChange={setLiveVehicles}
+            />
             <div className="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-border"/>
             <div className="absolute bottom-3 right-3">
               <Button size="sm" onClick={() => setMapOpen(true)}>Enlarge map</Button>
