@@ -11,17 +11,19 @@ import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import { Header } from "@/components/core/Header";
+import { Footer } from "@/components/core/Footer";
 import { AuthProvider } from "@/context/AuthContext";
 
 const queryClient = new QueryClient();
 
 function Layout() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <main>
+      <main className="flex-1">
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 }
