@@ -71,7 +71,11 @@ export function GoogleMap({ className, compact = false, center, cityName, onSele
   useEffect(() => {
     const initial = genVehicles(cityName);
     setVehicles(initial);
-    onVehiclesChange?.(initial);
+    if (onVehiclesChange) {
+      // ensure parent state update doesn't happen during render
+      // schedule asynchronously
+      requestAnimationFrame(() => onVehiclesChange(initial));
+    }
   }, [cityName, center?.lat, center?.lng]);
 
   useEffect(() => {
@@ -84,7 +88,7 @@ export function GoogleMap({ className, compact = false, center, cityName, onSele
           etaMins: Math.max(1, v.etaMins + Math.round((Math.random() - 0.5) * 2)),
           seatsAvailable: Math.max(0, v.seatsAvailable + Math.round((Math.random() - 0.5) * 2)),
         }));
-        onVehiclesChange?.(next);
+        if (onVehiclesChange) requestAnimationFrame(() => onVehiclesChange(next));
         return next;
       });
     }, 5000);
