@@ -36,16 +36,17 @@ export function loadGoogleMaps(apiKey?: string) {
   });
 }
 
-function busIcon(color: string): google.maps.Symbol {
+function busIcon(color: string): any {
   // Simple bus shape using path
+  // @ts-ignore google may not be typed here
   return {
     path: "M20 8H4C2.9 8 2 8.9 2 10v6c0 1.1.9 2 2 2v2h2v-2h8v2h2v-2c1.1 0 2-.9 2-2v-6c0-1.1-.9-2-2-2zm-1 7H5v-4h14v4zM6.5 6h11C19 6 20 5 20 3.5S19 1 17.5 1h-11C5 1 4 2 4 3.5S5 6 6.5 6z",
     fillColor: color,
     fillOpacity: 1,
     strokeWeight: 0,
     scale: 0.7,
-    anchor: new google.maps.Point(12, 12),
-  } as google.maps.Symbol;
+    anchor: new (window as any).google.maps.Point(12, 12),
+  } as any;
 }
 
 export function GoogleMap({
@@ -58,7 +59,7 @@ export function GoogleMap({
   onSelectVehicle?: (v: Vehicle) => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<google.maps.Map>();
+  const mapRef = useRef<any>();
   const [error, setError] = useState<string | null>(null);
   const [vehicles, setVehicles] = useState<Vehicle[]>([ // sample Tier 2/3 cities
     { id: "bus-001", position: { lat: 25.447, lng: 81.843 }, driver: "Rakesh Kumar", route: { from: "Prayagraj", to: "Mirzapur" }, etaMins: 12, fareINR: 35, seatsAvailable: 8 },
