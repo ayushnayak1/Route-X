@@ -15,7 +15,7 @@ declare global {
 
 export type Vehicle = {
   id: string;
-  position: google.maps.LatLngLiteral;
+  position: { lat: number; lng: number };
   driver: string;
   route: { from: string; to: string };
   etaMins: number;
