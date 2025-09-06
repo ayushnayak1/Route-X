@@ -35,32 +35,61 @@ function buildEmbedSrc({ cityQuery, center, zoom = 12 }: { cityQuery?: string; c
   return `https://www.google.com/maps?${params.toString()}`;
 }
 
-export function GoogleMap({ className, compact = false, center, cityName, onSelectVehicle }: { className?: string; compact?: boolean; center?: { lat: number; lng: number }; cityName?: string; onSelectVehicle?: (v: Vehicle) => void }) {
+export function GoogleMap({ className, compact = false, center, cityName, onSelectVehicle, onVehiclesChange, }: { className?: string; compact?: boolean; center?: { lat: number; lng: number }; cityName?: string; onSelectVehicle?: (v: Vehicle) => void; onVehiclesChange?: (vs: Vehicle[]) => void }) {
   const geo = useGeolocation();
   const effectiveCenter = center ?? geo ?? { lat: 22.9734, lng: 78.6569 };
   const src = useMemo(() => buildEmbedSrc({ cityQuery: cityName, center: cityName ? undefined : effectiveCenter, zoom: compact ? 12 : 13 }), [cityName, effectiveCenter.lat, effectiveCenter.lng, compact]);
 
-  const [vehicles, setVehicles] = useState<Vehicle[]>([
-    { id: "bus-001", driver: "Rakesh Kumar", route: { from: "Prayagraj", to: "Mirzapur" }, etaMins: 12, fareINR: 35, seatsAvailable: 8, xPct: 22, yPct: 38 },
-    { id: "bus-002", driver: "Anita Devi", route: { from: "Kanpur", to: "Unnao" }, etaMins: 18, fareINR: 28, seatsAvailable: 3, xPct: 62, yPct: 54 },
-    { id: "bus-003", driver: "Sanjay Patel", route: { from: "Indore", to: "Dewas" }, etaMins: 7, fareINR: 22, seatsAvailable: 15, xPct: 44, yPct: 20 },
-  ]);
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+
+  function genVehicles(label: string | undefined) {
+    const names = ["Rakesh Kumar","Anita Devi","Sanjay Patel","Sunita Yadav","Mohd. Imran","Pooja Singh","Vivek Sharma","Kiran Verma","Rajesh Gupta","Suresh Chavan","Neha Dubey","Asha Devi","Deepak Kumar","Alok Tiwari","Priya Patel","Gopal Das","Arun Rao","Meena Kumari"];
+    const toPlaces = ["Bus Stand","Railway Station","Market","College","Chowk","Depot","Civil Lines","Basti","Mandi","Ring Road","City Center","ISBT"];
+    const fromBase = label ?? "City";
+    const count = 15;
+    const list: Vehicle[] = Array.from({ length: count }).map((_, i) => {
+      const driver = names[i % names.length];
+      const to = toPlaces[(i * 3) % toPlaces.length];
+      const eta = Math.max(2, Math.round(5 + Math.random() * 40));
+      const fare = Math.round(10 + Math.random() * 60);
+      const seats = Math.round(Math.random() * 40);
+      return {
+        id: `bus-${i + 1}`,
+        driver,
+        route: { from: fromBase, to },
+        etaMins: eta,
+        fareINR: fare,
+        seatsAvailable: seats,
+        xPct: 8 + Math.random() * 84,
+        yPct: 10 + Math.random() * 78,
+      };
+    });
+    return list;
+  }
   const [active, setActive] = useState<Vehicle | null>(null);
 
   useEffect(() => {
+    const initial = genVehicles(cityName);
+    setVehicles(initial);
+    onVehiclesChange?.(initial);
+  }, [cityName, center?.lat, center?.lng]);
+
+  useEffect(() => {
     const t = setInterval(() => {
-      setVehicles((prev) =>
-        prev.map((v) => ({
+      setVehicles((prev) => {
+        const next = prev.map((v) => ({
           ...v,
           xPct: Math.min(95, Math.max(5, v.xPct + (Math.random() - 0.5) * 1.5)),
           yPct: Math.min(90, Math.max(5, v.yPct + (Math.random() - 0.5) * 1.5)),
           etaMins: Math.max(1, v.etaMins + Math.round((Math.random() - 0.5) * 2)),
           seatsAvailable: Math.max(0, v.seatsAvailable + Math.round((Math.random() - 0.5) * 2)),
-        })),
-      );
+        }));
+        onVehiclesChange?.(next);
+        return next;
+      });
     }, 5000);
     return () => clearInterval(t);
-  }, []);
+  }, [onVehiclesChange]);
 
   return (
     <div className={cn("relative overflow-hidden rounded-lg", className, compact ? "h-56" : "h-[420px]")}> 
