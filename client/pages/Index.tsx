@@ -29,7 +29,10 @@ export default function Index() {
   const [selected, setSelected] = useState<Vehicle | null>(null);
   const [city, setCity] = useState(cities[0].key);
   const [liveVehicles, setLiveVehicles] = useState<Vehicle[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [cityOverride, setCityOverride] = useState<string | undefined>(undefined);
   const selectedCenter = cities.find((c) => c.key === city)?.center || undefined;
+  const displayCityName = cityOverride ?? (city === "__geo" ? undefined : cities.find((c)=>c.key===city)?.name);
 
   return (
     <div className="min-h-[calc(100dvh-56px)] bg-gradient-to-b from-background to-muted/30">
