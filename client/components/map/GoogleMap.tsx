@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Bus, MapPin } from "lucide-react";
 import { useI18n } from "@/context/I18nContext";
