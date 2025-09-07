@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { GoogleMap } from "@/components/map/GoogleMap";
 import { useAuth } from "@/context/AuthContext";
 import { useI18n } from "@/context/I18nContext";
-import { MapPin, RouteIcon, CheckCircle2, Loader2 } from "lucide-react";
+import { MapPin, Route, CheckCircle2, Loader2 } from "lucide-react";
 
 export default function Driver() {
   const { user } = useAuth();
