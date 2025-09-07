@@ -34,6 +34,7 @@ export function Header() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" aria-label="User menu">
                   <Avatar className="h-8 w-8">
+                    {user.photoUrl && <AvatarImage src={user.photoUrl} alt={user.name} />}
                     <AvatarFallback>{user.name.slice(0, 2).toUpperCase()}</AvatarFallback>
                   </Avatar>
                 </Button>
