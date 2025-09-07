@@ -24,6 +24,9 @@ export function BookingDialog({ open, onOpenChange, vehicle }: { open: boolean; 
 
   const { user } = useAuth();
 
+  const [payOpen, setPayOpen] = useState(false);
+  const [pendingBooking, setPendingBooking] = useState<any | null>(null);
+
   function submit() {
     if (!vehicle) return;
     if (!name || !phone) {
@@ -46,12 +49,22 @@ export function BookingDialog({ open, onOpenChange, vehicle }: { open: boolean; 
       totalINR: total,
       createdAt: Date.now(),
     };
+    setPendingBooking(booking);
+    setPayOpen(true);
+  }
+
+  function onPaymentResult(ok: boolean, paymentId?: string) {
+    if (!ok || !pendingBooking) {
+      toast.error("Payment failed");
+      return;
+    }
     const uid = user?.id ?? "guest";
-    addBooking(uid, booking);
-    toast.success(`Booked ${seats} seat(s) · ₹${total}`);
+    addBooking(uid, pendingBooking);
+    toast.success(`Booked ${pendingBooking.seats} seat(s) · ₹${pendingBooking.totalINR}`);
     if (!user) {
       toast.info("Tip: Login to see your bookings in Profile");
     }
+    setPendingBooking(null);
     onOpenChange(false);
   }
 
