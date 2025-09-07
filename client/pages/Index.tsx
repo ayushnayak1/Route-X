@@ -71,7 +71,7 @@ export default function Index() {
             />
             <div className="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-border"/>
             <div className="absolute bottom-3 right-3">
-              <Button size="sm" onClick={() => setMapOpen(true)}>Enlarge map</Button>
+              <Button size="sm" onClick={() => setMapOpen(true)}>{t("enlarge_map")}</Button>
             </div>
           </CardContent>
         </Card>
