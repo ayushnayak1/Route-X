@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { LanguageSelect } from "@/components/core/LanguageSelect";
 import { useI18n } from "@/context/I18nContext";
+import { motion } from "framer-motion";
 
 export default function Profile() {
   const { user, updateUser } = useAuth();
