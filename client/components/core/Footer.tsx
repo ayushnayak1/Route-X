@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 export function Footer() {
   return (
     <footer className="mt-12 bg-gradient-to-b from-muted/50 to-background">
