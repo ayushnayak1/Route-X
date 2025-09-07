@@ -60,13 +60,15 @@ export default function Profile() {
         <CardContent>
           {user ? (
             <div className="grid gap-6 md:grid-cols-3">
-              <div className="flex flex-col items-center gap-3">
-                <Avatar className="h-24 w-24">
-                  {photo && <AvatarImage src={photo} alt={name} />}
-                  <AvatarFallback>{name.slice(0,2).toUpperCase() || "U"}</AvatarFallback>
-                </Avatar>
+              <motion.div className="flex flex-col items-center gap-3" whileHover={{ scale: 1.02 }} transition={{ type: "spring", stiffness: 250, damping: 20 }}>
+                <motion.div whileHover={{ scale: 1.03 }}>
+                  <Avatar className="h-24 w-24">
+                    {photo && <AvatarImage src={photo} alt={name} />}
+                    <AvatarFallback>{name.slice(0,2).toUpperCase() || "U"}</AvatarFallback>
+                  </Avatar>
+                </motion.div>
                 <Input type="file" accept="image/*" onChange={onPhotoChange} />
-              </div>
+              </motion.div>
               <div className="md:col-span-2 grid gap-4">
                 <div>
                   <Label htmlFor="name">{t("name")}</Label>
