@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { LanguageSelect } from "@/components/core/LanguageSelect";
 import { useI18n } from "@/context/I18nContext";
 
 export default function Index() {
@@ -36,9 +35,6 @@ export default function Index() {
           <p className="text-muted-foreground text-lg">
             {t("hero_desc")}
           </p>
-          <div className="flex items-center gap-3">
-            <LanguageSelect />
-          </div>
           <div className="flex flex-wrap gap-3">
             <Button onClick={() => setMapOpen(true)}>
               {t("open_map")} <ArrowRight className="ml-2 h-4 w-4" />
