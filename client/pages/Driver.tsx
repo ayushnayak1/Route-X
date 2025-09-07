@@ -65,11 +65,14 @@ export default function Driver() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 grid gap-6">
       <div className="grid gap-6 md:grid-cols-3">
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: "easeOut" }}>
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <span>{t("available_for_duty")}</span>
-              <Badge variant={available ? "default" : "secondary"}>{available ? t("on_duty") : t("off_duty")}</Badge>
+              <motion.span animate={{ scale: available ? [1, 1.06, 1] : 1 }} transition={{ duration: 0.4 }}>
+                <Badge variant={available ? "default" : "secondary"}>{available ? t("on_duty") : t("off_duty")}</Badge>
+              </motion.span>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -79,7 +82,9 @@ export default function Driver() {
             </div>
           </CardContent>
         </Card>
+        </motion.div>
 
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, ease: "easeOut", delay: 0.05 }}>
         <Card className="md:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center gap-2"><Route className="h-4 w-4"/> {t("your_route")}</CardTitle>
@@ -110,8 +115,10 @@ export default function Driver() {
             )}
           </CardContent>
         </Card>
+        </motion.div>
       </div>
 
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, ease: "easeOut", delay: 0.1 }}>
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2"><MapPin className="h-4 w-4"/> {t("current_location")}</CardTitle>
@@ -135,7 +142,9 @@ export default function Driver() {
           </div>
         </CardContent>
       </Card>
+      </motion.div>
 
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, ease: "easeOut", delay: 0.15 }}>
       <Card>
         <CardHeader>
           <CardTitle>{t("status_updates")}</CardTitle>
@@ -160,6 +169,7 @@ export default function Driver() {
           </div>
         </CardContent>
       </Card>
+      </motion.div>
     </div>
   );
 }
