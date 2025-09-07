@@ -38,6 +38,46 @@ function buildEmbedSrc({ cityQuery, center, zoom = 12 }: { cityQuery?: string; c
   return `https://www.google.com/maps?${params.toString()}`;
 }
 
+function MidpointLabel({ from, to }: { from: string; to: string }) {
+  const [label, setLabel] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    let cancelled = false;
+    async function run() {
+      const a = from?.trim(); const b = to?.trim();
+      if (!a || !b) { setLabel(null); return; }
+      setLoading(true);
+      try {
+        const geocode = async (q: string) => {
+          const r = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=1&addressdetails=1&countrycodes=in`);
+          const j = await r.json();
+          if (!Array.isArray(j) || j.length === 0) return null;
+          return { lat: parseFloat(j[0].lat), lng: parseFloat(j[0].lon) };
+        };
+        const p1 = await geocode(a);
+        const p2 = await geocode(b);
+        if (!p1 || !p2) { if (!cancelled) setLabel(null); return; }
+        const mid = { lat: (p1.lat + p2.lat) / 2, lng: (p1.lng + p2.lng) / 2 };
+        const rev = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${mid.lat}&lon=${mid.lng}`);
+        const rj = await rev.json();
+        const name = rj?.name || rj?.address?.suburb || rj?.address?.village || rj?.address?.town || rj?.address?.city || rj?.display_name;
+        if (!cancelled) setLabel(name ? String(name) : null);
+      } catch {
+        if (!cancelled) setLabel(null);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    run();
+    return () => { cancelled = true; };
+  }, [from, to]);
+  return (
+    <div className="mt-1 text-xs">
+      <span className="text-muted-foreground">{loading ? "Locating..." : label ? `Near ${label}` : ""}</span>
+    </div>
+  );
+}
+
 export function GoogleMap({ className, compact = false, center, cityName, onSelectVehicle, onVehiclesChange, }: { className?: string; compact?: boolean; center?: { lat: number; lng: number }; cityName?: string; onSelectVehicle?: (v: Vehicle) => void; onVehiclesChange?: (vs: Vehicle[]) => void }) {
   const { t } = useI18n();
   const geo = useGeolocation();
