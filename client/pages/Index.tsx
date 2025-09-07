@@ -34,8 +34,8 @@ export default function Index() {
   }, [user?.role, navigate]);
 
   useEffect(() => {
-    if (heroVideoRef.current) heroVideoRef.current.playbackRate = 0.6;
-    if (lowerVideoRef.current) lowerVideoRef.current.playbackRate = 0.5;
+    if (heroVideoRef.current) heroVideoRef.current.playbackRate = 0.3;
+    if (lowerVideoRef.current) lowerVideoRef.current.playbackRate = 0.25;
   }, []);
 
   return (
