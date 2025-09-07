@@ -43,6 +43,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(null);
         localStorage.removeItem(STORAGE_KEY);
       },
+      updateUser: (u: Partial<User>) => {
+        setUser((prev) => {
+          const next = { ...(prev as User), ...u } as User;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+          return next;
+        });
+      },
     }),
     [user],
   );
