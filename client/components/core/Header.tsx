@@ -14,6 +14,7 @@ import {
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { Bus, LogIn, User, LogOut } from "lucide-react";
+import { motion } from "framer-motion";
 
 export function Header() {
   const { user, logout } = useAuth();
@@ -21,14 +22,14 @@ export function Header() {
   const { t } = useI18n();
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/70 backdrop-blur">
+    <motion.header className="sticky top-0 z-40 w-full border-b bg-background/70 backdrop-blur" initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.4, ease: "easeOut" }}>
       <div className="mx-auto flex h-14 max-w-7xl items-center gap-4 px-4">
-        <Link to="/" className="flex items-center gap-2 font-extrabold">
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex items-center gap-2 font-extrabold">
           <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
             <Bus className="h-4 w-4" />
           </div>
           <span className="text-lg tracking-tight">Route-X</span>
-        </Link>
+        </motion.div>
 
         <div className="ml-auto flex items-center gap-2">
           <LanguageSelect />
@@ -62,6 +63,6 @@ export function Header() {
           )}
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 }
