@@ -10,6 +10,7 @@ import { GoogleMap } from "@/components/map/GoogleMap";
 import { useAuth } from "@/context/AuthContext";
 import { useI18n } from "@/context/I18nContext";
 import { MapPin, Route, CheckCircle2, Loader2 } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function Driver() {
   const { user } = useAuth();
