@@ -220,16 +220,18 @@ function genVehicles(label: string | undefined, places: string[]) {
 
       {/* Details panel */}
       {active && (
-        <Card className="absolute bottom-3 left-3 right-3 max-w-sm bg-background/95 p-3 shadow-lg backdrop-blur sm:left-3 sm:right-auto">
-          <div className="flex items-start justify-between">
-            <div>
-              <div className="font-semibold">{active.route.from} → {active.route.to}</div>
-              <div className="text-xs text-muted-foreground">Driver: {active.driver}</div>
-              <div className="mt-1 text-xs">ETA: <Badge variant="secondary">{active.etaMins} min</Badge> · Fare: ₹{active.fareINR} · Seats: {active.seatsAvailable} · Distance: {active.distanceKm} km</div>
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: "easeOut" }} className="absolute bottom-3 left-3 right-3 sm:left-3 sm:right-auto">
+          <Card className="max-w-sm bg-background/95 p-3 shadow-lg backdrop-blur">
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="font-semibold">{active.route.from} → {active.route.to}</div>
+                <div className="text-xs text-muted-foreground">Driver: {active.driver}</div>
+                <div className="mt-1 text-xs">ETA: <Badge variant="secondary">{active.etaMins} min</Badge> · Fare: ₹{active.fareINR} · Seats: {active.seatsAvailable} · Distance: {active.distanceKm} km</div>
+              </div>
+              <Button size="sm" onClick={() => onSelectVehicle?.(active)}>{t("book")}</Button>
             </div>
-            <Button size="sm" onClick={() => onSelectVehicle?.(active)}>{t("book")}</Button>
-          </div>
-        </Card>
+          </Card>
+        </motion.div>
       )}
     </div>
   );
