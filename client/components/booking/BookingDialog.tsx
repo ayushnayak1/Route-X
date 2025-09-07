@@ -55,6 +55,42 @@ export function BookingDialog({ open, onOpenChange, vehicle }: { open: boolean; 
   }
 
   const { t } = useI18n();
+
+  const [midpointLabel, setMidpointLabel] = useState<string | null>(null);
+  const [midLoading, setMidLoading] = useState(false);
+  useEffect(() => {
+    let cancelled = false;
+    async function run() {
+      if (!vehicle) { setMidpointLabel(null); return; }
+      const from = vehicle.route.from?.trim();
+      const to = vehicle.route.to?.trim();
+      if (!from || !to) { setMidpointLabel(null); return; }
+      setMidLoading(true);
+      try {
+        const geocode = async (q: string) => {
+          const r = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=1&addressdetails=1&countrycodes=in`);
+          const j = await r.json();
+          if (!Array.isArray(j) || j.length === 0) return null;
+          return { lat: parseFloat(j[0].lat), lng: parseFloat(j[0].lon) };
+        };
+        const a = await geocode(from);
+        const b = await geocode(to);
+        if (!a || !b) { if (!cancelled) setMidpointLabel(null); return; }
+        const mid = { lat: (a.lat + b.lat) / 2, lng: (a.lng + b.lng) / 2 };
+        const rev = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${mid.lat}&lon=${mid.lng}`);
+        const rj = await rev.json();
+        const name = rj?.name || rj?.address?.suburb || rj?.address?.village || rj?.address?.town || rj?.address?.city || rj?.display_name;
+        if (!cancelled) setMidpointLabel(name ? String(name) : null);
+      } catch {
+        if (!cancelled) setMidpointLabel(null);
+      } finally {
+        if (!cancelled) setMidLoading(false);
+      }
+    }
+    run();
+    return () => { cancelled = true; };
+  }, [vehicle?.route.from, vehicle?.route.to]);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -64,6 +100,13 @@ export function BookingDialog({ open, onOpenChange, vehicle }: { open: boolean; 
             {vehicle ? `${vehicle.route.from} → ${vehicle.route.to} · ETA ${vehicle.etaMins} min · ₹${vehicle.fareINR}` : t("dialog_desc")}
           </DialogDescription>
         </DialogHeader>
+
+        {vehicle && (
+          <div className="mb-2 rounded-md border bg-muted/40 p-2 text-xs">
+            <div className="font-medium">Current approx. location</div>
+            <div className="text-muted-foreground">{midLoading ? "Locating..." : (midpointLabel ? `Near ${midpointLabel}` : "—")}</div>
+          </div>
+        )}
 
         <div className="grid gap-4 py-2">
           <div className="grid grid-cols-2 gap-4">
