@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { LanguageSelect } from "@/components/core/LanguageSelect";
 import { useI18n } from "@/context/I18nContext";
@@ -73,6 +74,12 @@ export default function Profile() {
                 <div>
                   <Label htmlFor="email">{t("email")}</Label>
                   <Input id="email" type="email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+                </div>
+                <div>
+                  <Label>{t("role")}</Label>
+                  <div className="mt-1">
+                    <Badge>{user?.role ? t(user.role) : "-"}</Badge>
+                  </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <Label>{t("language")}</Label>
