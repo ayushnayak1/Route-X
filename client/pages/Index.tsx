@@ -80,8 +80,8 @@ export default function Index() {
       <section className="mx-auto max-w-7xl px-4 pb-16">
         <Card className="p-4">
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-lg font-semibold">Live status in {displayCityName ?? "your area"}</h3>
-            <span className="text-sm text-muted-foreground">{liveVehicles.length} buses</span>
+            <h3 className="text-lg font-semibold">{t("live_status_in")} {displayCityName ?? "your area"}</h3>
+            <span className="text-sm text-muted-foreground">{liveVehicles.length} {t("buses")}</span>
           </div>
           <div className="grid gap-2 max-h-80 overflow-auto">
             {liveVehicles.map((v) => (
@@ -95,12 +95,12 @@ export default function Index() {
                 <div className="hidden md:block text-sm">Fare: ₹{v.fareINR}</div>
                 <div className="hidden md:block text-sm">Dist: {v.distanceKm} km</div>
                 <div className="text-right md:text-left">
-                  <Button size="sm" onClick={() => { setSelected(v); setBookingOpen(true); }}>Book</Button>
+                  <Button size="sm" onClick={() => { setSelected(v); setBookingOpen(true); }}>{t("book")}</Button>
                 </div>
               </div>
             ))}
             {liveVehicles.length === 0 && (
-              <div className="text-sm text-muted-foreground">No buses visible yet. Try selecting a city.</div>
+              <div className="text-sm text-muted-foreground">{t("no_buses")}</div>
             )}
           </div>
         </Card>
@@ -109,8 +109,8 @@ export default function Index() {
       <Dialog open={mapOpen} onOpenChange={setMapOpen}>
         <DialogContent className="max-w-5xl p-0">
           <DialogHeader className="p-4 pb-0">
-            <DialogTitle>Live Map</DialogTitle>
-            <DialogDescription>Tap a vehicle to view details and book.</DialogDescription>
+            <DialogTitle>{t("dialog_title")}</DialogTitle>
+            <DialogDescription>{t("dialog_desc")}</DialogDescription>
           </DialogHeader>
           <div className="p-4 pt-2">
             <GoogleMap className="rounded-lg" cityName={displayCityName} onSelectVehicle={(v) => { setSelected(v); setBookingOpen(true); }} onVehiclesChange={setLiveVehicles} />
