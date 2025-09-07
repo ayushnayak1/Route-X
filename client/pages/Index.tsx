@@ -23,30 +23,34 @@ export default function Index() {
   const displayCityName = queryCity;
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { t } = useI18n();
 
   return (
     <div className="min-h-[calc(100dvh-56px)] bg-gradient-to-b from-background to-muted/30">
       <section className="relative mx-auto grid max-w-7xl gap-10 px-4 py-10 md:grid-cols-2 md:py-16">
         <div className="flex flex-col justify-center gap-6">
-          <Badge variant="secondary" className="w-fit">Live in Tier 2/3 India</Badge>
+          <Badge variant="secondary" className="w-fit">{t("hero_badge")}</Badge>
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
-            Track & book public buses with Route-X
+            {t("hero_title")}
           </h1>
           <p className="text-muted-foreground text-lg">
-            Real-time bus locations, ETA, driver details, fare estimate and seat availability for daily commuters in towns and rural India.
+            {t("hero_desc")}
           </p>
+          <div className="flex items-center gap-3">
+            <LanguageSelect />
+          </div>
           <div className="flex flex-wrap gap-3">
             <Button onClick={() => setMapOpen(true)}>
-              Open Live Map <ArrowRight className="ml-2 h-4 w-4" />
+              {t("open_map")} <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
             <Button variant="outline" onClick={() => {
               if (user) navigate("/profile");
-              else { toast.info("Please login to view your bookings"); navigate("/auth"); }
-            }}>My Bookings</Button>
+              else { toast.info(t("login_signup")); navigate("/auth"); }
+            }}>{t("my_bookings")}</Button>
           </div>
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2"><Bus className="h-4 w-4 text-primary"/> Focused on public buses</div>
-            <div className="flex items-center gap-2"><MapPin className="h-4 w-4 text-primary"/> Driver GPS powered</div>
+            <div className="flex items-center gap-2"><Bus className="h-4 w-4 text-primary"/> {t("focused_buses")}</div>
+            <div className="flex items-center gap-2"><MapPin className="h-4 w-4 text-primary"/> {t("driver_gps")}</div>
           </div>
         </div>
         <Card className="p-2 shadow-lg">
