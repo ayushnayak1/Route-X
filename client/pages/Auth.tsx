@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 
@@ -42,6 +43,7 @@ export default function Auth() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, ease: "easeOut" }}>
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Login / Sign up</CardTitle>
@@ -60,6 +62,7 @@ export default function Auth() {
                   <TabsTrigger value="signup">Sign up</TabsTrigger>
                 </TabsList>
                 <TabsContent value="login">
+                  <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: "easeOut" }}>
                   <form className="grid gap-4 md:grid-cols-2" onSubmit={handleSubmit("passenger","login")}
                   >
                     <div className="md:col-span-2">
@@ -71,11 +74,15 @@ export default function Auth() {
                       <Input id="password" name="password" required type="password" />
                     </div>
                     <div className="md:col-span-2">
-                      <Button type="submit" className="w-full">Login</Button>
+                      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                        <Button type="submit" className="w-full">Login</Button>
+                      </motion.div>
                     </div>
                   </form>
+                  </motion.div>
                 </TabsContent>
                 <TabsContent value="signup">
+                  <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: "easeOut" }}>
                   <form className="grid gap-4 md:grid-cols-2" onSubmit={handleSubmit("passenger","signup")}>
                     <div>
                       <Label htmlFor="name">Full name</Label>
@@ -94,9 +101,12 @@ export default function Auth() {
                       <Input id="confirm" name="confirm" required type="password" />
                     </div>
                     <div className="md:col-span-2">
-                      <Button type="submit" className="w-full">Create account</Button>
+                      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                        <Button type="submit" className="w-full">Create account</Button>
+                      </motion.div>
                     </div>
                   </form>
+                  </motion.div>
                 </TabsContent>
               </Tabs>
             </TabsContent>
@@ -108,6 +118,7 @@ export default function Auth() {
                   <TabsTrigger value="signup">Sign up</TabsTrigger>
                 </TabsList>
                 <TabsContent value="login">
+                  <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: "easeOut" }}>
                   <form className="grid gap-4 md:grid-cols-2" onSubmit={handleSubmit("driver","login")}
                   >
                     <div className="md:col-span-2">
@@ -124,11 +135,15 @@ export default function Auth() {
                       <Button type="button" variant="outline" onClick={shareGPS} className="ml-auto">Share GPS</Button>
                     </div>
                     <div className="md:col-span-2">
-                      <Button type="submit" className="w-full">Login as Driver</Button>
+                      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                        <Button type="submit" className="w-full">Login as Driver</Button>
+                      </motion.div>
                     </div>
                   </form>
+                  </motion.div>
                 </TabsContent>
                 <TabsContent value="signup">
+                  <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: "easeOut" }}>
                   <form className="grid gap-4 md:grid-cols-2" onSubmit={handleSubmit("driver","signup")}
                   >
                     <div>
@@ -153,15 +168,19 @@ export default function Auth() {
                       <Button type="button" variant="outline" onClick={shareGPS} className="ml-auto">Start GPS</Button>
                     </div>
                     <div className="md:col-span-2">
-                      <Button type="submit" className="w-full">Create driver account</Button>
+                      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                        <Button type="submit" className="w-full">Create driver account</Button>
+                      </motion.div>
                     </div>
                   </form>
+                  </motion.div>
                 </TabsContent>
               </Tabs>
             </TabsContent>
           </Tabs>
         </CardContent>
       </Card>
+      </motion.div>
     </div>
   );
 }
