@@ -59,7 +59,7 @@ export default function Index() {
               className="mb-2 flex flex-col gap-2 sm:flex-row sm:items-center"
               onSubmit={(e)=>{ e.preventDefault(); const q = searchTerm.trim(); setQueryCity(q || undefined); }}
             >
-              <Input value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} placeholder="Search city (e.g., Banda)" />
+              <Input value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} placeholder={t("search_placeholder")} />
               <Button type="submit" variant="secondary">Search</Button>
             </form>
             <GoogleMap
