@@ -15,6 +15,7 @@ type AuthContextType = {
   user: User | null;
   login: (u: User) => void;
   logout: () => void;
+  updateUser: (u: Partial<User>) => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
