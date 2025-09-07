@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { addBooking } from "@/lib/bookings";
 import { useAuth } from "@/context/AuthContext";
 import { useI18n } from "@/context/I18nContext";
+import { PaymentSheet } from "@/components/payments/PaymentSheet";
 
 export function BookingDialog({ open, onOpenChange, vehicle }: { open: boolean; onOpenChange: (v: boolean) => void; vehicle: Vehicle | null }) {
   const [seats, setSeats] = useState(1);
