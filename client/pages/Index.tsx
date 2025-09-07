@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { LanguageSelect } from "@/components/core/LanguageSelect";
+import { useI18n } from "@/context/I18nContext";
 
 export default function Index() {
   const [mapOpen, setMapOpen] = useState(false);
