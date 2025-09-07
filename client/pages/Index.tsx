@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { GoogleMap, Vehicle } from "@/components/map/GoogleMap";
@@ -33,7 +34,7 @@ export default function Index() {
   return (
     <div className="min-h-[calc(100dvh-56px)] bg-gradient-to-b from-background to-muted/30">
       <section className="relative mx-auto grid max-w-7xl gap-10 px-4 py-10 md:grid-cols-2 md:py-16">
-        <div className="flex flex-col justify-center gap-6">
+        <motion.div className="flex flex-col justify-center gap-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }}>
           <Badge variant="secondary" className="w-fit">{t("hero_badge")}</Badge>
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
             {t("hero_title")}
@@ -54,7 +55,8 @@ export default function Index() {
             <div className="flex items-center gap-2"><Bus className="h-4 w-4 text-primary"/> {t("focused_buses")}</div>
             <div className="flex items-center gap-2"><MapPin className="h-4 w-4 text-primary"/> {t("driver_gps")}</div>
           </div>
-        </div>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}>
         <Card className="p-2 shadow-lg">
           <CardContent className="relative p-3">
             <form
@@ -77,6 +79,7 @@ export default function Index() {
             </div>
           </CardContent>
         </Card>
+        </motion.div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-16">
@@ -86,8 +89,8 @@ export default function Index() {
             <span className="text-sm text-muted-foreground">{liveVehicles.length} {t("buses")}</span>
           </div>
           <div className="grid gap-2 max-h-80 overflow-auto">
-            {liveVehicles.map((v) => (
-              <div key={v.id} className="grid grid-cols-2 md:grid-cols-6 items-center gap-2 rounded border p-2">
+            {liveVehicles.map((v, i) => (
+              <motion.div key={v.id} className="grid grid-cols-2 md:grid-cols-6 items-center gap-2 rounded border p-2" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, ease: "easeOut", delay: i * 0.03 }}>
                 <div className="col-span-2 md:col-span-2">
                   <div className="font-medium">{v.route.from} → {v.route.to}</div>
                   <div className="text-xs text-muted-foreground">Driver: {v.driver}</div>
@@ -99,7 +102,7 @@ export default function Index() {
                 <div className="text-right md:text-left">
                   <Button size="sm" onClick={() => { setSelected(v); setBookingOpen(true); }}>{t("book")}</Button>
                 </div>
-              </div>
+              </motion.div>
             ))}
             {liveVehicles.length === 0 && (
               <div className="text-sm text-muted-foreground">{t("no_buses")}</div>
