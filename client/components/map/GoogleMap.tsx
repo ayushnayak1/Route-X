@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Bus, MapPin } from "lucide-react";
+import { useI18n } from "@/context/I18nContext";
 
 export type Vehicle = {
   id: string;
@@ -37,6 +38,7 @@ function buildEmbedSrc({ cityQuery, center, zoom = 12 }: { cityQuery?: string; c
 }
 
 export function GoogleMap({ className, compact = false, center, cityName, onSelectVehicle, onVehiclesChange, }: { className?: string; compact?: boolean; center?: { lat: number; lng: number }; cityName?: string; onSelectVehicle?: (v: Vehicle) => void; onVehiclesChange?: (vs: Vehicle[]) => void }) {
+  const { t } = useI18n();
   const geo = useGeolocation();
   const effectiveCenter = center ?? geo ?? { lat: 22.9734, lng: 78.6569 };
   const src = useMemo(() => buildEmbedSrc({ cityQuery: cityName, center: cityName ? undefined : effectiveCenter, zoom: compact ? 12 : 13 }), [cityName, effectiveCenter.lat, effectiveCenter.lng, compact]);
@@ -210,7 +212,7 @@ function genVehicles(label: string | undefined, places: string[]) {
       {/* User pin indicator when using geolocation */}
       {!cityName && geo && (
         <div className="absolute left-2 top-2 flex items-center gap-2 rounded bg-background/85 px-2 py-1 text-xs shadow backdrop-blur">
-          <MapPin className="h-3.5 w-3.5 text-primary" /> Using your location
+          <MapPin className="h-3.5 w-3.5 text-primary" /> {t("using_location")}
         </div>
       )}
 
@@ -223,7 +225,7 @@ function genVehicles(label: string | undefined, places: string[]) {
               <div className="text-xs text-muted-foreground">Driver: {active.driver}</div>
               <div className="mt-1 text-xs">ETA: <Badge variant="secondary">{active.etaMins} min</Badge> · Fare: ₹{active.fareINR} · Seats: {active.seatsAvailable} · Distance: {active.distanceKm} km</div>
             </div>
-            <Button size="sm" onClick={() => onSelectVehicle?.(active)}>Book</Button>
+            <Button size="sm" onClick={() => onSelectVehicle?.(active)}>{t("book")}</Button>
           </div>
         </Card>
       )}

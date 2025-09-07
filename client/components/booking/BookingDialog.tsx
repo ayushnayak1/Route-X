@@ -14,6 +14,7 @@ import { Vehicle } from "@/components/map/GoogleMap";
 import { toast } from "sonner";
 import { addBooking } from "@/lib/bookings";
 import { useAuth } from "@/context/AuthContext";
+import { useI18n } from "@/context/I18nContext";
 
 export function BookingDialog({ open, onOpenChange, vehicle }: { open: boolean; onOpenChange: (v: boolean) => void; vehicle: Vehicle | null }) {
   const [seats, setSeats] = useState(1);
@@ -53,42 +54,43 @@ export function BookingDialog({ open, onOpenChange, vehicle }: { open: boolean; 
     onOpenChange(false);
   }
 
+  const { t } = useI18n();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Book your seat</DialogTitle>
+          <DialogTitle>{t("booking_title")}</DialogTitle>
           <DialogDescription>
-            {vehicle ? `${vehicle.route.from} → ${vehicle.route.to} · ETA ${vehicle.etaMins} min · ₹${vehicle.fareINR}` : "Select a bus on the map"}
+            {vehicle ? `${vehicle.route.from} → ${vehicle.route.to} · ETA ${vehicle.etaMins} min · ₹${vehicle.fareINR}` : t("dialog_desc")}
           </DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-4 py-2">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="name">Full name</Label>
-              <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" />
+              <Label htmlFor="name">{t("full_name")}</Label>
+              <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder={t("full_name")} />
             </div>
             <div>
-              <Label htmlFor="phone">Phone</Label>
+              <Label htmlFor="phone">{t("phone")}</Label>
               <Input id="phone" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="10-digit" />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="seats">Seats</Label>
+              <Label htmlFor="seats">{t("seats")}</Label>
               <Input id="seats" type="number" min={1} max={10} value={seats} onChange={(e) => setSeats(parseInt(e.target.value || "1"))} />
             </div>
             <div>
-              <Label>Payable</Label>
+              <Label>{t("payable")}</Label>
               <div className="h-10 rounded-md border px-3 py-2 text-sm flex items-center">₹{vehicle ? seats * vehicle.fareINR : 0}</div>
             </div>
           </div>
         </div>
 
         <DialogFooter>
-          <Button variant="secondary" onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button onClick={submit}>Confirm booking</Button>
+          <Button variant="secondary" onClick={() => onOpenChange(false)}>{t("cancel")}</Button>
+          <Button onClick={submit}>{t("confirm_booking")}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

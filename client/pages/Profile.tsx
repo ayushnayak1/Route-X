@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { LanguageSelect } from "@/components/core/LanguageSelect";
+import { useI18n } from "@/context/I18nContext";
 
 export default function Profile() {
   const { user, updateUser } = useAuth();
@@ -47,11 +48,12 @@ export default function Profile() {
     toast.success("Profile updated");
   }
 
+  const { t } = useI18n();
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
       <Card>
         <CardHeader>
-          <CardTitle>Profile</CardTitle>
+          <CardTitle>{t("profile")}</CardTitle>
         </CardHeader>
         <CardContent>
           {user ? (
@@ -65,24 +67,24 @@ export default function Profile() {
               </div>
               <div className="md:col-span-2 grid gap-4">
                 <div>
-                  <Label htmlFor="name">Name</Label>
+                  <Label htmlFor="name">{t("name")}</Label>
                   <Input id="name" value={name} onChange={(e)=>setName(e.target.value)} />
                 </div>
                 <div>
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">{t("email")}</Label>
                   <Input id="email" type="email" value={email} onChange={(e)=>setEmail(e.target.value)} />
                 </div>
                 <div className="flex items-center gap-2">
-                  <Label>Language</Label>
+                  <Label>{t("language")}</Label>
                   <LanguageSelect />
                 </div>
                 <div>
-                  <Button onClick={saveProfile}>Save changes</Button>
+                  <Button onClick={saveProfile}>{t("save_changes")}</Button>
                 </div>
               </div>
             </div>
           ) : (
-            <p className="text-muted-foreground">You’re browsing as guest. Login to sync your bookings across devices.</p>
+            <p className="text-muted-foreground">{t("guest_msg")}</p>
           )}
         </CardContent>
       </Card>
@@ -90,7 +92,7 @@ export default function Profile() {
       <div className="mt-6">
         <Card>
           <CardHeader>
-            <CardTitle>Your bookings</CardTitle>
+            <CardTitle>{t("your_bookings")}</CardTitle>
           </CardHeader>
           <CardContent>
             {bookings.length ? (
@@ -101,10 +103,10 @@ export default function Profile() {
                       <div className="font-medium">{b.vehicle.route.from} → {b.vehicle.route.to}</div>
                       <div className="text-xs text-muted-foreground">Driver: {b.vehicle.driver}</div>
                     </div>
-                    <div className="hidden md:block text-sm">Seats: {b.seats}</div>
-                    <div className="hidden md:block text-sm">Total: ₹{b.totalINR}</div>
-                    <div className="hidden md:block text-sm">When: {new Date(b.createdAt).toLocaleString()}</div>
-                    <div className="text-right md:text-left text-sm">ETA: {b.vehicle.etaMins} min</div>
+                    <div className="hidden md:block text-sm">{t("seats_label")}: {b.seats}</div>
+                    <div className="hidden md:block text-sm">{t("total")}: ₹{b.totalINR}</div>
+                    <div className="hidden md:block text-sm">{t("when")}: {new Date(b.createdAt).toLocaleString()}</div>
+                    <div className="text-right md:text-left text-sm">{t("eta")}: {b.vehicle.etaMins} min</div>
                   </div>
                 ))}
               </div>
