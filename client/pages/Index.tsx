@@ -48,10 +48,12 @@ export default function Index() {
                 {t("open_map")} <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </motion.div>
-            <Button variant="outline" onClick={() => {
-              if (user) navigate("/profile");
-              else { toast.info(t("login_signup")); navigate("/auth"); }
-            }}>{t("my_bookings")}</Button>
+            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
+              <Button variant="outline" onClick={() => {
+                if (user) navigate("/profile");
+                else { toast.info(t("login_signup")); navigate("/auth"); }
+              }}>{t("my_bookings")}</Button>
+            </motion.div>
           </div>
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
             <div className="flex items-center gap-2"><Bus className="h-4 w-4 text-primary"/> {t("focused_buses")}</div>
