@@ -6,6 +6,7 @@ export type User = {
   name: string;
   email: string;
   role: UserRole;
+  photoUrl?: string;
 };
 
 const STORAGE_KEY = "routex-user";
