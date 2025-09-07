@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -23,6 +23,12 @@ export default function Index() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { t } = useI18n();
+
+  useEffect(() => {
+    if (user?.role === "driver") {
+      navigate("/driver", { replace: true });
+    }
+  }, [user?.role, navigate]);
 
   return (
     <div className="min-h-[calc(100dvh-56px)] bg-gradient-to-b from-background to-muted/30">
