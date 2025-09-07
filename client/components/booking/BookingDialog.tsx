@@ -150,6 +150,8 @@ export function BookingDialog({ open, onOpenChange, vehicle }: { open: boolean; 
           <Button onClick={submit}>{t("confirm_booking")}</Button>
         </DialogFooter>
       </DialogContent>
+
+      <PaymentSheet open={payOpen} onOpenChange={setPayOpen} amount={pendingBooking ? pendingBooking.totalINR : (vehicle ? seats * vehicle.fareINR : 0)} onResult={onPaymentResult} />
     </Dialog>
   );
 }
