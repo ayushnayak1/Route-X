@@ -43,9 +43,11 @@ export default function Index() {
             {t("hero_desc")}
           </p>
           <div className="flex flex-wrap gap-3">
-            <Button onClick={() => setMapOpen(true)}>
-              {t("open_map")} <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
+              <Button onClick={() => setMapOpen(true)}>
+                {t("open_map")} <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </motion.div>
             <Button variant="outline" onClick={() => {
               if (user) navigate("/profile");
               else { toast.info(t("login_signup")); navigate("/auth"); }
