@@ -190,10 +190,11 @@ function genVehicles(label: string | undefined, places: string[]) {
 
       {/* Overlay markers */}
       {vehicles.map((v) => (
-        <button
+        <motion.button
           key={v.id}
           className="group absolute -translate-x-1/2 -translate-y-1/2"
           style={{ left: `${v.xPct}%`, top: `${v.yPct}%` }}
+          whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.98 }}
           onClick={() => {
             setActive(v);
             onSelectVehicle?.(v);
@@ -207,7 +208,7 @@ function genVehicles(label: string | undefined, places: string[]) {
               {v.etaMins}m · {v.seatsAvailable}
             </span>
           </span>
-        </button>
+        </motion.button>
       ))}
 
       {/* User pin indicator when using geolocation */}
