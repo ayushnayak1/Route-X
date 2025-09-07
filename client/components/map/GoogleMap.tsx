@@ -227,6 +227,7 @@ function genVehicles(label: string | undefined, places: string[]) {
                 <div className="font-semibold">{active.route.from} → {active.route.to}</div>
                 <div className="text-xs text-muted-foreground">Driver: {active.driver}</div>
                 <div className="mt-1 text-xs">ETA: <Badge variant="secondary">{active.etaMins} min</Badge> · Fare: ₹{active.fareINR} · Seats: {active.seatsAvailable} · Distance: {active.distanceKm} km</div>
+                <MidpointLabel from={active.route.from} to={active.route.to} />
               </div>
               <Button size="sm" onClick={() => onSelectVehicle?.(active)}>{t("book")}</Button>
             </div>
