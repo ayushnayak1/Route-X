@@ -107,8 +107,8 @@ export default function Profile() {
           <CardContent>
             {bookings.length ? (
               <div className="grid gap-3">
-                {bookings.map((b) => (
-                  <div key={b.id} className="grid grid-cols-2 md:grid-cols-6 items-center gap-2 rounded border p-3">
+                {bookings.map((b, i) => (
+                  <motion.div key={b.id} className="grid grid-cols-2 md:grid-cols-6 items-center gap-2 rounded border p-3" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, ease: "easeOut", delay: i * 0.03 }}>
                     <div className="col-span-2 md:col-span-2">
                       <div className="font-medium">{b.vehicle.route.from} → {b.vehicle.route.to}</div>
                       <div className="text-xs text-muted-foreground">Driver: {b.vehicle.driver}</div>
@@ -117,7 +117,7 @@ export default function Profile() {
                     <div className="hidden md:block text-sm">{t("total")}: ₹{b.totalINR}</div>
                     <div className="hidden md:block text-sm">{t("when")}: {new Date(b.createdAt).toLocaleString()}</div>
                     <div className="text-right md:text-left text-sm">{t("eta")}: {b.vehicle.etaMins} min</div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             ) : (
