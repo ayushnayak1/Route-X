@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
@@ -24,6 +24,8 @@ export default function Index() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { t } = useI18n();
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
+  const lowerVideoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     if (user?.role === "driver") {
@@ -31,11 +33,17 @@ export default function Index() {
     }
   }, [user?.role, navigate]);
 
+  useEffect(() => {
+    if (heroVideoRef.current) heroVideoRef.current.playbackRate = 0.6;
+    if (lowerVideoRef.current) lowerVideoRef.current.playbackRate = 0.5;
+  }, []);
+
   return (
     <div className="min-h-[calc(100dvh-56px)] bg-gradient-to-b from-background to-muted/30">
       <section className="relative mx-auto grid max-w-7xl gap-10 px-4 py-10 md:grid-cols-2 md:py-16">
         <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-none">
           <video
+            ref={heroVideoRef}
             className="h-full w-full object-cover"
             src="https://videos.pexels.com/video-files/5533766/5533766-sd_640_360_30fps.mp4"
             autoPlay
@@ -44,7 +52,7 @@ export default function Index() {
             playsInline
             aria-hidden="true"
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-background/80 via-background/60 to-background/80" />
+          <div className="absolute inset-0 bg-gradient-to-br from-background/60 via-background/35 to-background/60" />
         </div>
         <motion.div className="flex flex-col justify-center gap-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }}>
           <Badge variant="secondary" className="w-fit">{t("hero_badge")}</Badge>
@@ -98,7 +106,20 @@ export default function Index() {
         </motion.div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-16">
+      <section className="relative mx-auto max-w-7xl px-4 pb-16">
+        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-xl">
+          <video
+            ref={lowerVideoRef}
+            className="h-full w-full object-cover"
+            src="https://videos.pexels.com/video-files/19298496/19298496-sd_960_540_25fps.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-background/60 to-transparent" />
+        </div>
         <Card className="p-4">
           <div className="mb-3 flex items-center justify-between">
             <h3 className="text-lg font-semibold">{t("live_status_in")} {displayCityName ?? "your area"}</h3>
