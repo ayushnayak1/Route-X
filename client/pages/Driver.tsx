@@ -81,7 +81,7 @@ export default function Driver() {
 
         <Card className="md:col-span-2">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2"><RouteIcon className="h-4 w-4"/> {t("your_route")}</CardTitle>
+            <CardTitle className="flex items-center gap-2"><Route className="h-4 w-4"/> {t("your_route")}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid gap-3 md:grid-cols-3">
