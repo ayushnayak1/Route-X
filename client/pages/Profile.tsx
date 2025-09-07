@@ -52,7 +52,7 @@ export default function Profile() {
 
   const { t } = useI18n();
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10">
+    <motion.div className="mx-auto max-w-4xl px-4 py-10" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, ease: "easeOut" }}>
       <Card>
         <CardHeader>
           <CardTitle>{t("profile")}</CardTitle>
@@ -126,6 +126,6 @@ export default function Profile() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </motion.div>
   );
 }
