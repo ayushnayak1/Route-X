@@ -1,5 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { ThemeToggle } from "./ThemeToggle";
+import { LanguageSelect } from "./LanguageSelect";
+import { useI18n } from "@/context/I18nContext";
 import { useAuth } from "@/context/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -16,6 +18,7 @@ import { Bus, LogIn, User, LogOut } from "lucide-react";
 export function Header() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { t } = useI18n();
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/70 backdrop-blur">
@@ -28,6 +31,7 @@ export function Header() {
         </Link>
 
         <div className="ml-auto flex items-center gap-2">
+          <LanguageSelect />
           <ThemeToggle />
           {user ? (
             <DropdownMenu>
@@ -42,13 +46,19 @@ export function Header() {
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel className="truncate">{user.name}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => navigate("/profile")}> <User className="mr-2 h-4 w-4"/> Profile</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate("/profile")}>
+                  <User className="mr-2 h-4 w-4"/> {t("profile")}
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => logout()}> <LogOut className="mr-2 h-4 w-4"/> Sign out</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => logout()}>
+                  <LogOut className="mr-2 h-4 w-4"/> {t("sign_out")}
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button onClick={() => navigate("/auth")}> <LogIn className="mr-2 h-4 w-4"/> Login / Sign up</Button>
+            <Button onClick={() => navigate("/auth")}>
+              <LogIn className="mr-2 h-4 w-4"/> {t("login_signup")}
+            </Button>
           )}
         </div>
       </div>
