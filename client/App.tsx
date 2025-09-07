@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
+import Driver from "./pages/Driver";
 import { Header } from "@/components/core/Header";
 import { Footer } from "@/components/core/Footer";
 import { AuthProvider } from "@/context/AuthContext";
