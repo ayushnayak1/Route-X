@@ -16,6 +16,7 @@ import { addBooking } from "@/lib/bookings";
 import { useAuth } from "@/context/AuthContext";
 import { useI18n } from "@/context/I18nContext";
 import { PaymentSheet } from "@/components/payments/PaymentSheet";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export function BookingDialog({ open, onOpenChange, vehicle }: { open: boolean; onOpenChange: (v: boolean) => void; vehicle: Vehicle | null }) {
   const [seats, setSeats] = useState(1);
