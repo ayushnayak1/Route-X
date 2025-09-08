@@ -23,7 +23,8 @@ export default function Auth() {
       const data = new FormData(e.currentTarget);
       const name = (data.get("name") as string) || "User";
       const email = (data.get("email") as string) || "user@example.com";
-      login({ id: crypto.randomUUID(), name, email, role });
+      const gender = (data.get("gender") as string) as any;
+      login({ id: crypto.randomUUID(), name, email, role, gender });
       toast.success(action === "login" ? "Welcome back" : "Account created");
       navigate("/");
     };
