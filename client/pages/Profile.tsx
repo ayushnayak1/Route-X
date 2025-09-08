@@ -80,8 +80,9 @@ export default function Profile() {
                 </div>
                 <div>
                   <Label>{t("role")}</Label>
-                  <div className="mt-1">
+                  <div className="mt-1 flex gap-2">
                     <Badge>{user?.role ? t(user.role) : "-"}</Badge>
+                    {user?.gender && <Badge variant="secondary">{user.gender}</Badge>}
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
