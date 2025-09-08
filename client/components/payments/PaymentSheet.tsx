@@ -12,6 +12,13 @@ export function PaymentSheet({ open, onOpenChange, amount, onResult }: { open: b
   const [paid, setPaid] = useState<{ id: string } | null>(null);
 
   function pay() {
+    if (method === "cash") {
+      const pid = `cash_${Math.random().toString(36).slice(2, 8)}`;
+      setPaid({ id: pid });
+      onResult(true, pid);
+      setTimeout(() => onOpenChange(false), 600);
+      return;
+    }
     setProcessing(true);
     setTimeout(() => {
       const ok = true; // simulate success
@@ -35,7 +42,7 @@ export function PaymentSheet({ open, onOpenChange, amount, onResult }: { open: b
           <div className="text-sm">Amount payable: <span className="font-semibold">₹{amount}</span></div>
           <div>
             <Label className="mb-2 block">Method</Label>
-            <RadioGroup value={method} onValueChange={(v) => setMethod(v as any)} className="grid grid-cols-1 gap-2 md:grid-cols-3">
+            <RadioGroup value={method} onValueChange={(v) => setMethod(v as any)} className="grid grid-cols-1 gap-2 md:grid-cols-4">
               <div className="flex items-center gap-2 rounded-md border p-2">
                 <RadioGroupItem id="m-upi" value="upi" />
                 <Label htmlFor="m-upi">UPI</Label>
@@ -47,6 +54,10 @@ export function PaymentSheet({ open, onOpenChange, amount, onResult }: { open: b
               <div className="flex items-center gap-2 rounded-md border p-2">
                 <RadioGroupItem id="m-net" value="netbanking" />
                 <Label htmlFor="m-net">Netbanking</Label>
+              </div>
+              <div className="flex items-center gap-2 rounded-md border p-2">
+                <RadioGroupItem id="m-cash" value="cash" />
+                <Label htmlFor="m-cash">Cash</Label>
               </div>
             </RadioGroup>
           </div>
@@ -87,7 +98,11 @@ export function PaymentSheet({ open, onOpenChange, amount, onResult }: { open: b
           {paid && (
             <div className="flex items-center gap-2 rounded-md border border-green-600/30 bg-green-500/10 p-2 text-sm">
               <CheckCircle2 className="h-4 w-4 text-green-600" />
-              Payment successful · ID: {paid.id}
+              {method === "cash" ? (
+                <span>Cash selected · Ref: {paid.id}</span>
+              ) : (
+                <span>Payment successful · ID: {paid.id}</span>
+              )}
             </div>
           )}
         </div>
