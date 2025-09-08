@@ -160,6 +160,10 @@ export default function Auth() {
                   <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: "easeOut" }}>
                   <form className="grid gap-4 md:grid-cols-2" onSubmit={handleSubmit("driver","login")}
                   >
+                    <div>
+                      <Label htmlFor="dname-login">Full name (optional)</Label>
+                      <Input id="dname-login" name="name" placeholder="Driver name" />
+                    </div>
                     <div className="md:col-span-2">
                       <Label htmlFor="demail">Email</Label>
                       <Input id="demail" name="email" required type="email" placeholder="driver@routex.in" />
@@ -167,6 +171,23 @@ export default function Auth() {
                     <div className="md:col-span-2">
                       <Label htmlFor="dpassword">Password</Label>
                       <Input id="dpassword" name="password" required type="password" />
+                    </div>
+                    <div className="md:col-span-2">
+                      <Label className="mb-2 block">Gender</Label>
+                      <RadioGroup name="gender" className="grid grid-cols-3 gap-2">
+                        <div className="flex items-center gap-2 rounded-md border p-2">
+                          <RadioGroupItem id="dg-m" value="male" />
+                          <Label htmlFor="dg-m">Male</Label>
+                        </div>
+                        <div className="flex items-center gap-2 rounded-md border p-2">
+                          <RadioGroupItem id="dg-f" value="female" />
+                          <Label htmlFor="dg-f">Female</Label>
+                        </div>
+                        <div className="flex items-center gap-2 rounded-md border p-2">
+                          <RadioGroupItem id="dg-o" value="other" />
+                          <Label htmlFor="dg-o">Other</Label>
+                        </div>
+                      </RadioGroup>
                     </div>
                     <div className="flex items-center gap-3 md:col-span-2">
                       <Switch id="avail" checked={driverAvailable} onCheckedChange={setDriverAvailable} />
