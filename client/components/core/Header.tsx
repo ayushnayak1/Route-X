@@ -106,6 +106,7 @@ export function Header() {
         <div className="ml-auto flex items-center gap-2">
           <LanguageSelect />
           <ThemeToggle />
+          <SOSButton />
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
