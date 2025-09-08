@@ -114,6 +114,23 @@ export default function Auth() {
                       <Label htmlFor="email2">Email</Label>
                       <Input id="email2" name="email" required type="email" placeholder="you@example.com" />
                     </div>
+                    <div className="md:col-span-2">
+                      <Label className="mb-2 block">Gender</Label>
+                      <RadioGroup name="gender" className="grid grid-cols-3 gap-2">
+                        <div className="flex items-center gap-2 rounded-md border p-2">
+                          <RadioGroupItem id="psg-m" value="male" />
+                          <Label htmlFor="psg-m">Male</Label>
+                        </div>
+                        <div className="flex items-center gap-2 rounded-md border p-2">
+                          <RadioGroupItem id="psg-f" value="female" />
+                          <Label htmlFor="psg-f">Female</Label>
+                        </div>
+                        <div className="flex items-center gap-2 rounded-md border p-2">
+                          <RadioGroupItem id="psg-o" value="other" />
+                          <Label htmlFor="psg-o">Other</Label>
+                        </div>
+                      </RadioGroup>
+                    </div>
                     <div>
                       <Label htmlFor="password2">Password</Label>
                       <Input id="password2" name="password" required type="password" />
