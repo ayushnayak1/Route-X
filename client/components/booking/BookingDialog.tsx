@@ -145,6 +145,21 @@ export function BookingDialog({ open, onOpenChange, vehicle }: { open: boolean; 
               <div className="h-10 rounded-md border px-3 py-2 text-sm flex items-center">₹{vehicle ? seats * vehicle.fareINR : 0}</div>
             </div>
           </div>
+
+          <div className="grid gap-2">
+            <Label>Send confirmation via</Label>
+            <RadioGroup className="grid grid-cols-2 gap-2" value={notifyChannel} onValueChange={(v) => setNotifyChannel(v as any)}>
+              <div className="flex items-center gap-2 rounded-md border p-2">
+                <RadioGroupItem id="notify-w" value="whatsapp" />
+                <Label htmlFor="notify-w">WhatsApp</Label>
+              </div>
+              <div className="flex items-center gap-2 rounded-md border p-2">
+                <RadioGroupItem id="notify-s" value="sms" />
+                <Label htmlFor="notify-s">SMS</Label>
+              </div>
+            </RadioGroup>
+            <div className="text-xs text-muted-foreground">We’ll send your booking details to the entered phone number.</div>
+          </div>
         </div>
 
         <DialogFooter>
