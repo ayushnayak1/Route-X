@@ -214,6 +214,23 @@ export default function Auth() {
                       <Label htmlFor="demail2">Email</Label>
                       <Input id="demail2" name="email" required type="email" placeholder="driver@routex.in" />
                     </div>
+                    <div className="md:col-span-2">
+                      <Label className="mb-2 block">Gender</Label>
+                      <RadioGroup name="gender" className="grid grid-cols-3 gap-2">
+                        <div className="flex items-center gap-2 rounded-md border p-2">
+                          <RadioGroupItem id="dsg-m" value="male" />
+                          <Label htmlFor="dsg-m">Male</Label>
+                        </div>
+                        <div className="flex items-center gap-2 rounded-md border p-2">
+                          <RadioGroupItem id="dsg-f" value="female" />
+                          <Label htmlFor="dsg-f">Female</Label>
+                        </div>
+                        <div className="flex items-center gap-2 rounded-md border p-2">
+                          <RadioGroupItem id="dsg-o" value="other" />
+                          <Label htmlFor="dsg-o">Other</Label>
+                        </div>
+                      </RadioGroup>
+                    </div>
                     <div>
                       <Label htmlFor="busno">Bus number</Label>
                       <Input id="busno" name="busno" required placeholder="UP65 AB 1234" />
