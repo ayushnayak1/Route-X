@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { CheckCircle2, Loader2 } from "lucide-react";
 
 export function PaymentSheet({ open, onOpenChange, amount, onResult }: { open: boolean; onOpenChange: (v: boolean) => void; amount: number; onResult: (ok: boolean, paymentId?: string) => void }) {
-  const [method, setMethod] = useState<"upi" | "card" | "netbanking">("upi");
+  const [method, setMethod] = useState<"upi" | "card" | "netbanking" | "cash">("upi");
   const [processing, setProcessing] = useState(false);
   const [paid, setPaid] = useState<{ id: string } | null>(null);
 
