@@ -22,6 +22,7 @@ export function BookingDialog({ open, onOpenChange, vehicle }: { open: boolean; 
   const [seats, setSeats] = useState(1);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [notifyChannel, setNotifyChannel] = useState<"sms" | "whatsapp">("whatsapp");
 
   const { user } = useAuth();
 
