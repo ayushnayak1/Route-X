@@ -13,8 +13,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
-import { Bus, LogIn, User, LogOut } from "lucide-react";
+import { Bus, LogIn, User, LogOut, ShieldAlert, Phone } from "lucide-react";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 
 export function Header() {
   const { user, logout } = useAuth();
