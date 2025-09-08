@@ -7,6 +7,7 @@ export type User = {
   email: string;
   role: UserRole;
   photoUrl?: string;
+  gender?: "male" | "female" | "other";
 };
 
 const STORAGE_KEY = "routex-user";
