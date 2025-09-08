@@ -66,6 +66,10 @@ export default function Auth() {
                   <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: "easeOut" }}>
                   <form className="grid gap-4 md:grid-cols-2" onSubmit={handleSubmit("passenger","login")}
                   >
+                    <div>
+                      <Label htmlFor="pname-login">Full name (optional)</Label>
+                      <Input id="pname-login" name="name" placeholder="Your name" />
+                    </div>
                     <div className="md:col-span-2">
                       <Label htmlFor="email">Email</Label>
                       <Input id="email" name="email" required type="email" placeholder="you@example.com" />
@@ -73,6 +77,23 @@ export default function Auth() {
                     <div className="md:col-span-2">
                       <Label htmlFor="password">Password</Label>
                       <Input id="password" name="password" required type="password" />
+                    </div>
+                    <div className="md:col-span-2">
+                      <Label className="mb-2 block">Gender</Label>
+                      <RadioGroup name="gender" className="grid grid-cols-3 gap-2">
+                        <div className="flex items-center gap-2 rounded-md border p-2">
+                          <RadioGroupItem id="pg-m" value="male" />
+                          <Label htmlFor="pg-m">Male</Label>
+                        </div>
+                        <div className="flex items-center gap-2 rounded-md border p-2">
+                          <RadioGroupItem id="pg-f" value="female" />
+                          <Label htmlFor="pg-f">Female</Label>
+                        </div>
+                        <div className="flex items-center gap-2 rounded-md border p-2">
+                          <RadioGroupItem id="pg-o" value="other" />
+                          <Label htmlFor="pg-o">Other</Label>
+                        </div>
+                      </RadioGroup>
                     </div>
                     <div className="md:col-span-2">
                       <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
