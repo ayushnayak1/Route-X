@@ -16,13 +16,10 @@ import { addBooking } from "@/lib/bookings";
 import { useAuth } from "@/context/AuthContext";
 import { useI18n } from "@/context/I18nContext";
 import { PaymentSheet } from "@/components/payments/PaymentSheet";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-
 export function BookingDialog({ open, onOpenChange, vehicle }: { open: boolean; onOpenChange: (v: boolean) => void; vehicle: Vehicle | null }) {
   const [seats, setSeats] = useState(1);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [notifyChannel, setNotifyChannel] = useState<"sms" | "whatsapp">("whatsapp");
 
   const { user } = useAuth();
 
@@ -55,27 +52,6 @@ export function BookingDialog({ open, onOpenChange, vehicle }: { open: boolean; 
     setPayOpen(true);
   }
 
-  async function sendNotification(channel: "sms" | "whatsapp", to: string, text: string) {
-    try {
-      const res = await fetch("/.netlify/functions/message", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ channel, to, text }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data?.ok) throw new Error(data?.error || "Failed to send message");
-      toast.success(channel === "whatsapp" ? "WhatsApp sent" : "SMS sent");
-    } catch (e: any) {
-      toast.error("Could not send message", { description: e?.message || String(e) });
-    }
-  }
-
-  function formatMessage() {
-    if (!pendingBooking) return "";
-    const b = pendingBooking;
-    const when = new Date(b.createdAt).toLocaleString();
-    return `Route-X Booking Confirmed\n${b.vehicle.route.from} → ${b.vehicle.route.to}\nSeats: ${b.seats}\nTotal: ₹${b.totalINR}\nETA: ${b.vehicle.etaMins} min\nWhen: ${when}`;
-  }
 
   async function onPaymentResult(ok: boolean, paymentId?: string) {
     if (!ok || !pendingBooking) {
@@ -85,10 +61,6 @@ export function BookingDialog({ open, onOpenChange, vehicle }: { open: boolean; 
     const uid = user?.id ?? "guest";
     addBooking(uid, pendingBooking);
     toast.success(`Booked ${pendingBooking.seats} seat(s) · ₹${pendingBooking.totalINR}`);
-    const msg = formatMessage();
-    if (phone && msg) {
-      await sendNotification(notifyChannel, phone, msg);
-    }
     if (!user) {
       toast.info("Tip: Login to see your bookings in Profile");
     }
