@@ -230,7 +230,7 @@ function genVehicles(label: string | undefined, places: string[]) {
       />
 
       {/* Overlay markers */}
-      {vehicles.map((v) => (
+      {vehicles.map((v) => v.etaMins > 0 ? (
         <motion.button
           key={v.id}
           className="group absolute -translate-x-1/2 -translate-y-1/2"
@@ -250,7 +250,7 @@ function genVehicles(label: string | undefined, places: string[]) {
             </span>
           </span>
         </motion.button>
-      ))}
+      ) : null)}
 
       {/* User pin indicator when using geolocation */}
       {!cityName && geo && (
