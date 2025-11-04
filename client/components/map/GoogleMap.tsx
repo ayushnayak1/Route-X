@@ -159,13 +159,14 @@ function genVehicles(label: string | undefined, places: string[]) {
   const nearby = places.length ? places : nearbyStatic;
   const pool = nearby.length ? nearby : fallbackNearby(fromBase);
   const count = 18;
+  const hasCityName = !!label && label.trim().length > 0;
   const list: Vehicle[] = Array.from({ length: count }).map((_, i) => {
     const driver = names[i % names.length];
     const to = pool[i % pool.length];
-    const eta = Math.max(2, Math.round(5 + Math.random() * 40));
-    const fare = Math.round(10 + Math.random() * 60);
-    const seats = Math.round(Math.random() * 40);
-    const distanceKm = Math.round(2 + Math.random() * 48); // within 50km
+    const eta = hasCityName ? Math.max(2, Math.round(5 + Math.random() * 40)) : 0;
+    const fare = hasCityName ? Math.round(10 + Math.random() * 60) : 0;
+    const seats = hasCityName ? Math.round(Math.random() * 40) : 0;
+    const distanceKm = hasCityName ? Math.round(2 + Math.random() * 48) : 0;
     return {
       id: `bus-${i + 1}`,
       driver,
