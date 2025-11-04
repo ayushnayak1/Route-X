@@ -130,7 +130,6 @@ export default function Index() {
               <motion.div key={v.id} className="grid grid-cols-2 md:grid-cols-6 items-center gap-2 rounded border p-2" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, ease: "easeOut", delay: i * 0.03 }}>
                 <div className="col-span-2 md:col-span-2">
                   <div className="font-medium">{v.route.from} → {v.route.to}</div>
-                  <div className="text-xs text-muted-foreground">Driver: {v.driver}</div>
                 </div>
                 <div className="hidden md:block text-sm">ETA: {v.etaMins} min</div>
                 <div className="hidden md:block text-sm">Seats: {v.seatsAvailable}</div>
