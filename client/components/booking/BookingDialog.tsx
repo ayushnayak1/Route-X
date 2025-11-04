@@ -16,6 +16,7 @@ import { addBooking } from "@/lib/bookings";
 import { useAuth } from "@/context/AuthContext";
 import { useI18n } from "@/context/I18nContext";
 import { PaymentSheet } from "@/components/payments/PaymentSheet";
+
 export function BookingDialog({ open, onOpenChange, vehicle }: { open: boolean; onOpenChange: (v: boolean) => void; vehicle: Vehicle | null }) {
   const [seats, setSeats] = useState(1);
   const [name, setName] = useState("");
@@ -51,7 +52,6 @@ export function BookingDialog({ open, onOpenChange, vehicle }: { open: boolean; 
     setPendingBooking(booking);
     setPayOpen(true);
   }
-
 
   async function onPaymentResult(ok: boolean, paymentId?: string) {
     if (!ok || !pendingBooking) {
@@ -142,21 +142,6 @@ export function BookingDialog({ open, onOpenChange, vehicle }: { open: boolean; 
               <Label>{t("payable")}</Label>
               <div className="h-10 rounded-md border px-3 py-2 text-sm flex items-center">₹{vehicle ? seats * vehicle.fareINR : 0}</div>
             </div>
-          </div>
-
-          <div className="grid gap-2">
-            <Label>Send confirmation via</Label>
-            <RadioGroup className="grid grid-cols-2 gap-2" value={notifyChannel} onValueChange={(v) => setNotifyChannel(v as any)}>
-              <div className="flex items-center gap-2 rounded-md border p-2">
-                <RadioGroupItem id="notify-w" value="whatsapp" />
-                <Label htmlFor="notify-w">WhatsApp</Label>
-              </div>
-              <div className="flex items-center gap-2 rounded-md border p-2">
-                <RadioGroupItem id="notify-s" value="sms" />
-                <Label htmlFor="notify-s">SMS</Label>
-              </div>
-            </RadioGroup>
-            <div className="text-xs text-muted-foreground">We’ll send your booking details to the entered phone number.</div>
           </div>
         </div>
 
